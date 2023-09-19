@@ -14,12 +14,13 @@ import {
 } from "@mui/material"
 import React from "react"
 
+import packageJson from "../../package.json"
 import * as S from "./styled"
 import { useRunner } from "./useRunner"
 
 export const Runner: React.FC = () => {
   const {
-    data: { on, commands, runnerCommands, cycled, count, allTimeCount },
+    data: { on, commands, runnerCommands, cycled, allTimeCount },
     handlers: {
       handleToggleOn,
       handleToggleCycled,
@@ -32,10 +33,7 @@ export const Runner: React.FC = () => {
   return (
     <S.Wrapper>
       <Typography>
-        Подтверждений за все время: <b>{allTimeCount}</b>
-      </Typography>
-      <Typography style={{ marginBottom: 24 }}>
-        Подтверждений за последний сеанс: <b>{count}</b>
+        Всего подтверждений: <b style={{ marginLeft: 4 }}>{allTimeCount}</b>
       </Typography>
       {on ? (
         <Button
@@ -79,7 +77,7 @@ export const Runner: React.FC = () => {
               {runnerCommands.length > 0 &&
                 !runnerCommands.find(
                   (runnerCommand) => runnerCommand.id === command.id
-                ) && <DoneIcon color="success" />}
+                ) && <DoneIcon color="success" sx={{ fontSize: 20 }} />}
             </div>
             <TextField
               placeholder="команда"
@@ -93,26 +91,39 @@ export const Runner: React.FC = () => {
             <TextField
               placeholder="селектор"
               onChange={(evt) =>
-                handleCommandUpdate(command.id, "value", evt.target.value)
+                handleCommandUpdate(command.id, "selector", evt.target.value)
               }
-              value={command.value}
+              value={command.selector}
+              size="small"
+              disabled={on}
+            />
+            <TextField
+              placeholder="текст"
+              onChange={(evt) =>
+                handleCommandUpdate(command.id, "text", evt.target.value)
+              }
+              value={command.text}
               size="small"
               disabled={on}
             />
             <IconButton
               onClick={() => handleRemoveCommand(command.id)}
               disabled={on}
-              style={{ visibility: on ? "hidden" : "visible" }}>
+              style={{ visibility: on ? "hidden" : "visible" }}
+              size="small">
               <ClearIcon />
             </IconButton>
           </S.CommandWrapper>
         ))}
-        <Button onClick={handleAddCommand} disabled={on} fullWidth>
-          Добавить команду
-        </Button>
+        {!on && (
+          <Button onClick={handleAddCommand} fullWidth>
+            Добавить команду
+          </Button>
+        )}
       </S.CommandsWrapper>
       <Typography variant="h6" style={{ marginBottom: 24 }}>
-        Ketchup 🍅 <Chip label="1.0.0" size="small" />
+        {packageJson.displayName}{" "}
+        <Chip label={packageJson.version} size="small" />
       </Typography>
     </S.Wrapper>
   )

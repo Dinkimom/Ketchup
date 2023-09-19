@@ -36,7 +36,6 @@ export const useRunner = () => {
     StorageService.updateField("cycled", String(!cycled))
   }
 
-  const [count, setCount] = useState(0)
   const allTimeCount = StorageService.getField("allTimeCount")
 
   const [commands, setCommands] = useState<Command[]>(
@@ -45,7 +44,7 @@ export const useRunner = () => {
   const handleAddCommand = () => {
     setCommands((commands) => [
       ...commands,
-      { id: uuid.v1(), name: "", value: "" }
+      { id: uuid.v1(), name: "", selector: "" }
     ])
   }
   const handleRemoveCommand = (id: string) => {
@@ -53,7 +52,7 @@ export const useRunner = () => {
   }
   const handleCommandUpdate = (
     id: string,
-    field: "name" | "value",
+    field: "name" | "selector" | "text",
     value: string
   ) => {
     const commandToUpdate = commands.find((command) => command.id === id)
@@ -66,7 +65,10 @@ export const useRunner = () => {
   const runCommand = async () => {
     const commandToRun = runnerCommands[0]
 
-    await InteractionService[commandToRun.name](commandToRun.value)
+    await InteractionService[commandToRun.name](
+      commandToRun.selector,
+      commandToRun.text
+    )
 
     if (StorageService.getField("stopped") === "true") {
       return
@@ -77,7 +79,6 @@ export const useRunner = () => {
 
       if (!runnerCommands.length) {
         StorageService.updateField("allTimeCount", allTimeCount + 1)
-        setCount(count + 1)
       }
 
       if (cycled && !runnerCommands.length) {
@@ -130,7 +131,6 @@ export const useRunner = () => {
       commands,
       runnerCommands,
       cycled,
-      count,
       allTimeCount
     },
     handlers: {

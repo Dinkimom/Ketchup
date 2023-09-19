@@ -1,1 +1,6 @@
-export type Command = { id: string; name: string; value: string }
+export type Command = {
+  id: string
+  name: string
+  selector: string
+  text?: string
+}

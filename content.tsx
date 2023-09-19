@@ -28,7 +28,7 @@ function IndexContent() {
       {showPopup && (
         <Card
           style={{
-            width: 360,
+            width: 450,
             height: "calc(100vh - 48px)",
             position: "fixed",
             top: 24,
