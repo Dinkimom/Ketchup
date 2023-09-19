@@ -1,23 +1,35 @@
-import { useEffect, useState } from "react"
+import { createRef, useEffect, useRef, useState } from "react"
 import * as uuid from "uuid"
+
+import "url-change-event"
 
 import { InteractionService, StorageService } from "~services"
 
 import type { Command } from "./types"
 
 export const useRunner = () => {
-  const [on, setOn] = useState(false)
   const handleToggleOn = () => {
-    if (on) {
-      setRunnerInitialized(false)
+    if (runnerCommands.length > 0) {
+      setRunnerCommands([])
+    } else {
+      setRunnerCommands([...commands])
     }
-
-    setOn(!on)
   }
+  useEffect(() => {
+    const previousRunnerCommands = StorageService.getField("runnerCommands")
 
-  const [cycled, setCycled] = useState(true)
+    if (previousRunnerCommands) {
+      setRunnerCommands(previousRunnerCommands)
+      StorageService.updateField("runnerCommands", [])
+    }
+  }, [])
+
+  const [cycled, setCycled] = useState(
+    StorageService.getField("cycled") === "true"
+  )
   const handleToggleCycled = () => {
     setCycled(!cycled)
+    StorageService.updateField("cycled", !cycled)
   }
 
   const [count, setCount] = useState(0)
@@ -46,14 +58,6 @@ export const useRunner = () => {
     setCommands([...commands])
   }
   const [runnerCommands, setRunnerCommands] = useState<Command[]>([])
-  const [isRunnerInitialized, setRunnerInitialized] = useState(false)
-
-  useEffect(() => {
-    if (on && commands.length && !isRunnerInitialized) {
-      setRunnerCommands([...commands])
-      setRunnerInitialized(true)
-    }
-  }, [on, commands])
 
   const runCommand = async () => {
     const commandToRun = runnerCommands[0]
@@ -72,23 +76,54 @@ export const useRunner = () => {
   }
 
   useEffect(() => {
-    if (on && runnerCommands.length && isRunnerInitialized) {
+    if (runnerCommands.length) {
       runCommand()
     }
-  }, [on, runnerCommands, isRunnerInitialized])
-
-  useEffect(() => {
-    if (on && !runnerCommands.length && isRunnerInitialized) {
-      handleToggleOn()
-    }
-  }, [on, runnerCommands])
+  }, [runnerCommands])
 
   useEffect(() => {
     StorageService.updateField("commands", commands)
   }, [commands])
 
+  const handleUrlChange = () => {
+    console.log(cycled, runnerCommands)
+    if (!cycled && runnerCommands.length) {
+      console.log("NOT COMPLETED!")
+      runnerCommands.shift()
+      StorageService.updateField("popupOpened", true)
+      StorageService.updateField("on", true)
+      StorageService.updateField("cycled", cycled)
+      StorageService.updateField("runnerInitialized", true)
+
+      if (!cycled) {
+        StorageService.updateField("runnerCommands", runnerCommands)
+      } else {
+        StorageService.updateField(
+          "runnerCommands",
+          runnerCommands.length ? runnerCommands : commands
+        )
+      }
+      console.log(StorageService.getField("runnerCommands"))
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("urlchangeevent", handleUrlChange)
+
+    return () => {
+      window.removeEventListener("urlchangeevent", handleUrlChange)
+    }
+  }, [handleUrlChange])
+
   return {
-    data: { on, commands, runnerCommands, cycled, count, allTimeCount },
+    data: {
+      on: runnerCommands.length > 0,
+      commands,
+      runnerCommands,
+      cycled,
+      count,
+      allTimeCount
+    },
     handlers: {
       handleToggleOn,
       handleToggleCycled,

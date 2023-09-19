@@ -39,6 +39,8 @@ export const InteractionService = {
     const elementToClick = await InteractionService.find(query)
 
     elementToClick.click()
+
+    await InteractionService.delay(3000)
   },
   delay(time: number) {
     return new Promise((resolve) => setTimeout(resolve, time))

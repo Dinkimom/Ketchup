@@ -4900,6 +4900,11 @@ upper-case@^2.0.2:
   dependencies:
     tslib "^2.0.3"
 
+url-change-event@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/url-change-event/-/url-change-event-0.1.7.tgz#21ab499bcb1405483178d8ca608e2f2260e02e0f"
+  integrity sha512-Ce17wpDs1nF2looTjTsxjk8Pmn7/IiqARhbNvyO7TmtHocuZ5FSr9btkWzKQfLS+bdBXFGJufyp0+nyGf2fa2A==
+
 util-deprecate@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"

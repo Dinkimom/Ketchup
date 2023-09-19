@@ -73,12 +73,13 @@ export const Runner: React.FC = () => {
         {commands.map((command) => (
           <S.CommandWrapper key={command.id}>
             <div style={{ width: 40 }}>
-              {on && runnerCommands[0]?.id === command.id && (
+              {runnerCommands[0]?.id === command.id && (
                 <CircularProgress size={20} />
               )}
-              {!runnerCommands.includes(command) && on && (
-                <DoneIcon color="success" />
-              )}
+              {runnerCommands.length > 0 &&
+                !runnerCommands.find(
+                  (runnerCommand) => runnerCommand.id === command.id
+                ) && <DoneIcon color="success" />}
             </div>
             <TextField
               placeholder="команда"
