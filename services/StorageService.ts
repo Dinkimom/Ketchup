@@ -2,24 +2,21 @@ type FieldName =
   | "allTimeCount"
   | "commands"
   | "popupOpened"
-  | "on"
-  | "runnerInitialized"
   | "runnerCommands"
   | "cycled"
+  | "stopped"
 
 const FIELD_NAMES: FieldName[] = [
   "allTimeCount",
   "commands",
   "popupOpened",
-  "on",
-  "runnerInitialized",
   "runnerCommands",
-  "cycled"
+  "cycled",
+  "stopped"
 ]
 
 export const StorageService = {
   updateField(name: FieldName, value: unknown) {
-    console.log(name, value)
     localStorage.setItem(name, JSON.stringify(value))
   },
   getField(name: FieldName) {
@@ -33,9 +30,8 @@ export const StorageService = {
 const DEFAULT_VALUES: { [key in FieldName]: unknown } = {
   allTimeCount: 0,
   commands: [],
-  popupOpened: true,
-  on: false,
-  runnerInitialized: false,
+  popupOpened: "false",
   runnerCommands: [],
-  cycled: true
+  cycled: "true",
+  stopped: "true"
 }

@@ -9,7 +9,7 @@ import { StorageService } from "~services"
 
 function IndexContent() {
   const [showPopup, setShowPopup] = useState(
-    StorageService.getField("popupOpened")
+    StorageService.getField("popupOpened") === "true"
   )
   const root = document.querySelector("plasmo-csui").shadowRoot
   const muiCache = createCache({
@@ -20,6 +20,7 @@ function IndexContent() {
 
   const handleTogglePopup = () => {
     setShowPopup(!showPopup)
+    StorageService.updateField("popupOpened", String(!showPopup))
   }
 
   return (

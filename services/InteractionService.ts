@@ -22,7 +22,7 @@ export const InteractionService = {
         return resolve(InteractionService.find(query))
       }
 
-      const observer = new MutationObserver((mutations) => {
+      const observer = new MutationObserver(() => {
         if (document.querySelector(query)) {
           observer.disconnect()
           resolve(InteractionService.find(query))
