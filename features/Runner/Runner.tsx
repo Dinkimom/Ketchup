@@ -19,7 +19,7 @@ import { useRunner } from "./useRunner"
 
 export const Runner: React.FC = () => {
   const {
-    data: { on, commands, runnerCommands, cycled, count },
+    data: { on, commands, runnerCommands, cycled, count, allTimeCount },
     handlers: {
       handleToggleOn,
       handleToggleCycled,
@@ -32,7 +32,7 @@ export const Runner: React.FC = () => {
   return (
     <S.Wrapper>
       <Typography>
-        Подтверждений за все время: <b>{count}</b>
+        Подтверждений за все время: <b>{allTimeCount}</b>
       </Typography>
       <Typography style={{ marginBottom: 24 }}>
         Подтверждений за последний сеанс: <b>{count}</b>
@@ -85,6 +85,7 @@ export const Runner: React.FC = () => {
               onChange={(evt) =>
                 handleCommandUpdate(command.id, "name", evt.target.value)
               }
+              value={command.name}
               size="small"
               disabled={on}
             />
@@ -93,6 +94,7 @@ export const Runner: React.FC = () => {
               onChange={(evt) =>
                 handleCommandUpdate(command.id, "value", evt.target.value)
               }
+              value={command.value}
               size="small"
               disabled={on}
             />

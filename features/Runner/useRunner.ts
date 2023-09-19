@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import * as uuid from "uuid"
 
-import { InteractionService } from "~services"
+import { InteractionService, StorageService } from "~services"
 
 import type { Command } from "./types"
 
@@ -21,8 +21,11 @@ export const useRunner = () => {
   }
 
   const [count, setCount] = useState(0)
+  const allTimeCount = StorageService.getField("allTimeCount")
 
-  const [commands, setCommands] = useState<Command[]>([])
+  const [commands, setCommands] = useState<Command[]>(
+    StorageService.getField("commands")
+  )
   const handleAddCommand = () => {
     setCommands((commands) => [
       ...commands,
@@ -64,6 +67,7 @@ export const useRunner = () => {
       setRunnerCommands([...runnerCommands])
     }
 
+    StorageService.updateField("allTimeCount", allTimeCount + 1)
     setCount(count + 1)
   }
 
@@ -79,8 +83,12 @@ export const useRunner = () => {
     }
   }, [on, runnerCommands])
 
+  useEffect(() => {
+    StorageService.updateField("commands", commands)
+  }, [commands])
+
   return {
-    data: { on, commands, runnerCommands, cycled, count },
+    data: { on, commands, runnerCommands, cycled, count, allTimeCount },
     handlers: {
       handleToggleOn,
       handleToggleCycled,
