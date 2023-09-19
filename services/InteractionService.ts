@@ -4,8 +4,13 @@ export const InteractionService = {
   find: async (query: string, text?: string) => {
     const possibleElements = [...document.querySelectorAll(query)]
     const elementToFind: any = text
-      ? possibleElements.find((element) => element.innerHTML.includes(text))
+      ? possibleElements.find((element) => element.textContent.includes(text))
       : possibleElements[0]
+
+    if (!elementToFind) {
+      return undefined
+    }
+
     const transitionBeforeChange = elementToFind.style.transition
     const backgroundBeforeChange = elementToFind.style.background
 
@@ -20,25 +25,17 @@ export const InteractionService = {
     return elementToFind
   },
   waitFor: async (query: string, text?: string) => {
-    return new Promise((resolve) => {
-      const elementToFind = InteractionService.find(query, text)
-      if (elementToFind) {
-        return resolve(elementToFind)
+    let elementToFind
+
+    while (!elementToFind) {
+      elementToFind = await InteractionService.find(query, text)
+
+      if (!elementToFind) {
+        await InteractionService.delay(2000)
       }
+    }
 
-      const observer = new MutationObserver(() => {
-        if (document.querySelector(query)) {
-          const elementToFind = InteractionService.find(query, text)
-          observer.disconnect()
-          resolve(elementToFind)
-        }
-      })
-
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      })
-    })
+    return elementToFind
   },
   click: async (query: string, text?: string) => {
     const elementToClick = await InteractionService.find(query, text)
