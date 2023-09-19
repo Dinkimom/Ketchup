@@ -1,8 +1,12 @@
 import createCache from "@emotion/cache"
 import { CacheProvider } from "@emotion/react"
-import { Button } from "@mui/material"
+import { Button, Card } from "@mui/material"
+import { useState } from "react"
+
+import { Runner } from "~features/Runner"
 
 function IndexContent() {
+  const [showPopup, setShowPopup] = useState(true)
   const root = document.querySelector("plasmo-csui").shadowRoot
   const muiCache = createCache({
     key: "mui",
@@ -12,7 +16,18 @@ function IndexContent() {
 
   return (
     <CacheProvider value={muiCache}>
-      <Button style={{ position: "fixed", right: 24, top: 24 }}>Hello!</Button>
+      {showPopup && (
+        <Card
+          style={{
+            width: 340,
+            height: "calc(100vh - 48px)",
+            position: "fixed",
+            top: 24,
+            right: 24
+          }}>
+          <Runner />
+        </Card>
+      )}
     </CacheProvider>
   )
 }
