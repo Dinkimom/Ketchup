@@ -20,7 +20,13 @@ export const StorageService = {
     localStorage.setItem(name, JSON.stringify(value))
   },
   getField(name: FieldName) {
-    return JSON.parse(localStorage.getItem(name)) || DEFAULT_VALUES[name]
+    const value = JSON.parse(localStorage.getItem(name))
+
+    if (value === null) {
+      return DEFAULT_VALUES[name]
+    }
+
+    return value
   },
   clearAll() {
     FIELD_NAMES.forEach((fieldName) => localStorage.removeItem(fieldName))
@@ -30,8 +36,8 @@ export const StorageService = {
 const DEFAULT_VALUES: { [key in FieldName]: unknown } = {
   allTimeCount: 0,
   commands: [],
-  popupOpened: "false",
+  popupOpened: false,
   runnerCommands: [],
-  cycled: "true",
-  stopped: "true"
+  cycled: true,
+  stopped: true
 }

@@ -12,10 +12,10 @@ export const useRunner = () => {
     if (runnerCommands.length) {
       setRunnerCommands([])
       StorageService.updateField("runnerCommands", [])
-      StorageService.updateField("stopped", "true")
+      StorageService.updateField("stopped", true)
     } else {
       setRunnerCommands([...commands])
-      StorageService.updateField("stopped", "false")
+      StorageService.updateField("stopped", false)
     }
   }
 
@@ -28,12 +28,10 @@ export const useRunner = () => {
     }
   }, [])
 
-  const [cycled, setCycled] = useState(
-    StorageService.getField("cycled") === "true"
-  )
+  const [cycled, setCycled] = useState(StorageService.getField("cycled"))
   const handleToggleCycled = () => {
     setCycled(!cycled)
-    StorageService.updateField("cycled", String(!cycled))
+    StorageService.updateField("cycled", !cycled)
   }
 
   const allTimeCount = StorageService.getField("allTimeCount")
@@ -70,7 +68,7 @@ export const useRunner = () => {
       commandToRun.text
     )
 
-    if (StorageService.getField("stopped") === "true") {
+    if (StorageService.getField("stopped")) {
       return
     }
 
@@ -102,7 +100,7 @@ export const useRunner = () => {
   const handleUrlChange = () => {
     if (runnerCommands.length) {
       runnerCommands.shift()
-      StorageService.updateField("popupOpened", "true")
+      StorageService.updateField("popupOpened", true)
 
       if (!cycled) {
         StorageService.updateField("runnerCommands", runnerCommands)
