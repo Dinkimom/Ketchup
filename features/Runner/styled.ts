@@ -1,4 +1,5 @@
 import styled from "@emotion/styled"
+import { grey } from "@mui/material/colors"
 
 export const Wrapper = styled("div")`
   display: flex;
@@ -13,7 +14,7 @@ export const Wrapper = styled("div")`
 export const CommandsWrapper = styled("div")`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
   width: 100%;
   overflow: scroll;
@@ -25,7 +26,18 @@ export const CommandWrapper = styled("div")`
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px;
+  padding: 12px 4px;
   border-radius: 5px;
   transition: all 0.5s;
+`
+
+export const ValuesWrapper = styled("div")`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`
+
+export const FirstRowValues = styled("div")`
+  display: flex;
+  gap: 8px;
 `

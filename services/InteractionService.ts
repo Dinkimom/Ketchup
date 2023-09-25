@@ -1,4 +1,4 @@
-import { red, yellow } from "@mui/material/colors"
+import { red } from "@mui/material/colors"
 
 export const InteractionService = {
   find: async (query: string, text?: string) => {
@@ -38,7 +38,7 @@ export const InteractionService = {
     return elementToFind
   },
   click: async (query: string, text?: string) => {
-    const elementToClick = await InteractionService.find(query, text)
+    const elementToClick = await InteractionService.waitFor(query, text)
 
     elementToClick.click()
 
