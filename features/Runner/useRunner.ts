@@ -115,6 +115,10 @@ export const useRunner = () => {
     }
   }
 
+  const handleShowElement = (selector: string, text?: string) => {
+    InteractionService.find(selector, text)
+  }
+
   useEffect(() => {
     window.addEventListener("urlchangeevent", handleUrlChange)
 
@@ -136,7 +140,8 @@ export const useRunner = () => {
       handleToggleCycled,
       handleCommandUpdate,
       handleRemoveCommand,
-      handleAddCommand
+      handleAddCommand,
+      handleShowElement
     }
   }
 }

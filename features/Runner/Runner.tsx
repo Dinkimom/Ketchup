@@ -2,6 +2,7 @@ import ClearIcon from "@mui/icons-material/Clear"
 import DoneIcon from "@mui/icons-material/Done"
 import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import StopIcon from "@mui/icons-material/Stop"
+import VisibilityIcon from "@mui/icons-material/Visibility"
 import {
   Button,
   Checkbox,
@@ -26,7 +27,8 @@ export const Runner: React.FC = () => {
       handleToggleCycled,
       handleCommandUpdate,
       handleRemoveCommand,
-      handleAddCommand
+      handleAddCommand,
+      handleShowElement
     }
   } = useRunner()
 
@@ -79,6 +81,15 @@ export const Runner: React.FC = () => {
                 !runnerCommands.find(
                   (runnerCommand) => runnerCommand.id === command.id
                 ) && <DoneIcon color="success" sx={{ fontSize: 20 }} />}
+              {!on && (
+                <IconButton
+                  onClick={() =>
+                    handleShowElement(command.selector, command.text)
+                  }
+                  size="small">
+                  <VisibilityIcon />
+                </IconButton>
+              )}
             </div>
             <S.ValuesWrapper>
               <S.FirstRowValues>
