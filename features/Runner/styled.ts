@@ -17,7 +17,13 @@ export const CommandsWrapper = styled("div")`
   gap: 8px;
   align-items: center;
   width: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
   min-height: calc(100vh - 290px);
   max-height: calc(100vh - 290px);
+  background: ${grey[100]};
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  user-select: none;
+  border: 1px solid ${grey[300]};
 `

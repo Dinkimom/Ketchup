@@ -1,4 +1,6 @@
-import { Button, Typography } from "@mui/material"
+import AddIcon from "@mui/icons-material/Add"
+import AddCircleIcon from "@mui/icons-material/AddCircle"
+import { Button, IconButton, Typography } from "@mui/material"
 import React from "react"
 
 import { Command } from "./components/Command"
@@ -32,9 +34,10 @@ export const Runner: React.FC = () => {
         onToggleCycled={handleToggleCycled}
       />
       <S.CommandsWrapper>
-        {commands.map((command) => (
+        {commands.map((command, index) => (
           <Command
             key={command.id}
+            index={index}
             command={command}
             isOn={on}
             isRunning={runnerCommands[0]?.id === command.id}
@@ -50,9 +53,9 @@ export const Runner: React.FC = () => {
           />
         ))}
         {!on && (
-          <Button onClick={handleAddCommand} fullWidth>
-            Добавить команду
-          </Button>
+          <IconButton onClick={handleAddCommand} color="primary">
+            <AddCircleIcon sx={{ width: 32, height: 32 }} />
+          </IconButton>
         )}
       </S.CommandsWrapper>
       <VersionBadge />

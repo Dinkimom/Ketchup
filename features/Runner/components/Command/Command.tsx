@@ -1,7 +1,13 @@
 import ClearIcon from "@mui/icons-material/Clear"
 import DoneIcon from "@mui/icons-material/Done"
 import VisibilityIcon from "@mui/icons-material/Visibility"
-import { CircularProgress, IconButton, TextField } from "@mui/material"
+import {
+  Badge,
+  CircularProgress,
+  IconButton,
+  TextField,
+  Typography
+} from "@mui/material"
 import React from "react"
 
 import type { Command as CommandType } from "~features/Runner/types"
@@ -9,6 +15,7 @@ import type { Command as CommandType } from "~features/Runner/types"
 import * as S from "./styled"
 
 interface Props {
+  index: number
   command: CommandType
   isOn: boolean
   isRunning: boolean
@@ -19,6 +26,7 @@ interface Props {
 }
 
 export const Command: React.FC<Props> = ({
+  index,
   command,
   isOn,
   isRunning,
@@ -29,7 +37,7 @@ export const Command: React.FC<Props> = ({
 }) => {
   return (
     <S.CommandWrapper key={command.id}>
-      <div style={{ width: 40 }}>
+      <S.StatusWrapper>
         {isRunning && <CircularProgress size={20} />}
         {isComplete && <DoneIcon color="success" sx={{ fontSize: 20 }} />}
         {!isOn && (
@@ -39,7 +47,7 @@ export const Command: React.FC<Props> = ({
             <VisibilityIcon />
           </IconButton>
         )}
-      </div>
+      </S.StatusWrapper>
       <S.ValuesWrapper>
         <S.FirstRowValues>
           <TextField
