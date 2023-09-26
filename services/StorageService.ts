@@ -5,6 +5,7 @@ type FieldName =
   | "runnerCommands"
   | "cycled"
   | "stopped"
+  | "available"
 
 const FIELD_NAMES: FieldName[] = [
   "allTimeCount",
@@ -39,5 +40,6 @@ const DEFAULT_VALUES: { [key in FieldName]: unknown } = {
   popupOpened: false,
   runnerCommands: [],
   cycled: true,
-  stopped: true
+  stopped: true,
+  available: false
 }

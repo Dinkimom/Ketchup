@@ -23,6 +23,10 @@ function IndexContent() {
     StorageService.updateField("popupOpened", String(!showPopup))
   }
 
+  if (!StorageService.getField("available")) {
+    return null
+  }
+
   return (
     <CacheProvider value={muiCache}>
       {showPopup && (
