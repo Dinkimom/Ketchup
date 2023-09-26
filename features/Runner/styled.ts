@@ -7,8 +7,7 @@ export const Wrapper = styled("div")`
   gap: 16px;
   padding: 16px;
   align-items: center;
-
-  max-height: calc(100vh - 100px);
+  max-height: calc(80vh - 100px);
 `
 
 export const CommandsWrapper = styled("div")`
@@ -18,8 +17,8 @@ export const CommandsWrapper = styled("div")`
   align-items: center;
   width: 100%;
   overflow-y: scroll;
-  min-height: calc(100vh - 290px);
-  max-height: calc(100vh - 290px);
+  min-height: calc(80vh - 290px);
+  max-height: calc(80vh - 290px);
   background: ${grey[100]};
   padding: 16px;
   box-sizing: border-box;

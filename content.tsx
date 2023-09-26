@@ -35,7 +35,7 @@ function IndexContent() {
           <Card
             style={{
               width: 450,
-              height: "calc(100vh - 48px)",
+              height: "calc(80vh - 48px)",
               position: "fixed",
               top: 24,
               right: 24

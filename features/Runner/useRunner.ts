@@ -135,8 +135,16 @@ export const useRunner = () => {
     }
   }
 
-  const handleShowElement = (selector: string, text?: string) => {
-    InteractionService.find(selector, text)
+  const handleShowElement = async (selector: string, text?: string) => {
+    try {
+      const elementToFind = await InteractionService.find(selector, text)
+
+      if (!elementToFind) {
+        alert("Элемент не найден!")
+      }
+    } catch {
+      alert("Элемент не найден!")
+    }
   }
 
   useEffect(() => {
