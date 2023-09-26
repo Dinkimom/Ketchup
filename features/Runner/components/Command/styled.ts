@@ -12,6 +12,7 @@ export const CommandWrapper = styled("div")`
   background: white;
   border: 1px solid ${grey[300]};
   position: relative;
+  cursor: grab;
 `
 
 export const ValuesWrapper = styled("div")`

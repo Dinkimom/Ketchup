@@ -18,7 +18,8 @@ export const Runner: React.FC = () => {
       handleCommandUpdate,
       handleRemoveCommand,
       handleAddCommand,
-      handleShowElement
+      handleShowElement,
+      handleCommandMove
     }
   } = useRunner()
 
@@ -50,6 +51,7 @@ export const Runner: React.FC = () => {
             onShowElement={handleShowElement}
             onCommandUpdate={handleCommandUpdate}
             onCommandRemove={handleRemoveCommand}
+            onCommandMove={handleCommandMove}
           />
         ))}
         {!on && (

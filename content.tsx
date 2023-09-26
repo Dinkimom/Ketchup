@@ -3,7 +3,8 @@ import { CacheProvider } from "@emotion/react"
 import ClearIcon from "@mui/icons-material/Clear"
 import { Card } from "@mui/material"
 import { useState } from "react"
-
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Runner } from "~features/Runner"
 import { StorageService } from "~services"
 
@@ -29,58 +30,60 @@ function IndexContent() {
 
   return (
     <CacheProvider value={muiCache}>
-      {showPopup && (
-        <Card
-          style={{
-            width: 450,
-            height: "calc(100vh - 48px)",
-            position: "fixed",
-            top: 24,
-            right: 24
-          }}>
-          <Runner />
-        </Card>
-      )}
-      {!showPopup && (
-        <div
-          onClick={handleTogglePopup}
-          style={{
-            width: 50,
-            height: 50,
-            borderRadius: 25,
-            background: "red",
-            position: "fixed",
-            top: 12,
-            right: 12,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 24,
-            cursor: "pointer"
-          }}>
-          🍅
-        </div>
-      )}
-      {showPopup && (
-        <div
-          onClick={handleTogglePopup}
-          style={{
-            width: 50,
-            height: 50,
-            borderRadius: 25,
-            background: "lightgrey",
-            position: "fixed",
-            top: 12,
-            right: 12,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 24,
-            cursor: "pointer"
-          }}>
-          <ClearIcon />
-        </div>
-      )}
+      <DndProvider backend={HTML5Backend}>
+        {showPopup && (
+          <Card
+            style={{
+              width: 450,
+              height: "calc(100vh - 48px)",
+              position: "fixed",
+              top: 24,
+              right: 24
+            }}>
+            <Runner />
+          </Card>
+        )}
+        {!showPopup && (
+          <div
+            onClick={handleTogglePopup}
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: 25,
+              background: "red",
+              position: "fixed",
+              top: 12,
+              right: 12,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 24,
+              cursor: "pointer"
+            }}>
+            🍅
+          </div>
+        )}
+        {showPopup && (
+          <div
+            onClick={handleTogglePopup}
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: 25,
+              background: "lightgrey",
+              position: "fixed",
+              top: 12,
+              right: 12,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 24,
+              cursor: "pointer"
+            }}>
+            <ClearIcon />
+          </div>
+        )}
+      </DndProvider>
     </CacheProvider>
   )
 }

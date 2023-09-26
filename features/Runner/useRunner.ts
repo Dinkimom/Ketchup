@@ -60,6 +60,16 @@ export const useRunner = () => {
   }
   const [runnerCommands, setRunnerCommands] = useState<Command[]>([])
 
+  const handleCommandMove = (from: number, to: number) => {
+    const updatedCommands = [...commands]
+    const itemToMove = updatedCommands[from]
+
+    updatedCommands[from] = updatedCommands[to]
+    updatedCommands[to] = itemToMove
+
+    setCommands(updatedCommands)
+  }
+
   const runCommand = async () => {
     const commandToRun = runnerCommands[0]
 
@@ -141,7 +151,8 @@ export const useRunner = () => {
       handleCommandUpdate,
       handleRemoveCommand,
       handleAddCommand,
-      handleShowElement
+      handleShowElement,
+      handleCommandMove
     }
   }
 }

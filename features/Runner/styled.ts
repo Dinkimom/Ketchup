@@ -5,7 +5,7 @@ export const Wrapper = styled("div")`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 16px 8px;
+  padding: 16px;
   align-items: center;
 
   max-height: calc(100vh - 100px);
@@ -21,7 +21,7 @@ export const CommandsWrapper = styled("div")`
   min-height: calc(100vh - 290px);
   max-height: calc(100vh - 290px);
   background: ${grey[100]};
-  padding: 8px;
+  padding: 16px;
   box-sizing: border-box;
   border-radius: 4px;
   user-select: none;
