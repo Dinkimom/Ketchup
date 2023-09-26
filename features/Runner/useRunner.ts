@@ -11,10 +11,12 @@ export const useRunner = () => {
   const handleToggleOn = () => {
     if (runnerCommands.length) {
       setRunnerCommands([])
+      setOneCommandRun(false)
       StorageService.updateField("runnerCommands", [])
       StorageService.updateField("stopped", true)
     } else {
       setRunnerCommands([...commands])
+      setOneCommandRun(false)
       StorageService.updateField("stopped", false)
     }
   }
@@ -36,6 +38,7 @@ export const useRunner = () => {
 
   const allTimeCount = StorageService.getField("allTimeCount")
 
+  const [isOneCommandRun, setOneCommandRun] = useState(false)
   const [commands, setCommands] = useState<Command[]>(
     StorageService.getField("commands")
   )
@@ -70,6 +73,12 @@ export const useRunner = () => {
     setCommands(updatedCommands)
   }
 
+  const handleCommandRun = (index: number) => {
+    setRunnerCommands([commands[index]])
+    setOneCommandRun(true)
+    StorageService.updateField("stopped", false)
+  }
+
   const runCommand = async () => {
     const commandToRun = runnerCommands[0]
 
@@ -85,8 +94,9 @@ export const useRunner = () => {
     setRunnerCommands((runnerCommands) => {
       runnerCommands.shift()
 
-      if (!runnerCommands.length) {
+      if (!runnerCommands.length && !isOneCommandRun) {
         StorageService.updateField("allTimeCount", allTimeCount + 1)
+        setOneCommandRun(false)
       }
 
       if (cycled && !runnerCommands.length) {
@@ -143,7 +153,8 @@ export const useRunner = () => {
       commands,
       runnerCommands,
       cycled,
-      allTimeCount
+      allTimeCount,
+      isOneCommandRun
     },
     handlers: {
       handleToggleOn,
@@ -152,7 +163,8 @@ export const useRunner = () => {
       handleRemoveCommand,
       handleAddCommand,
       handleShowElement,
-      handleCommandMove
+      handleCommandMove,
+      handleCommandRun
     }
   }
 }

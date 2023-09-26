@@ -30,5 +30,6 @@ export const StatusWrapper = styled("div")`
   max-width: 40px;
   min-width: 40px;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `

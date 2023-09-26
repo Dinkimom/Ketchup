@@ -1,13 +1,8 @@
 import ClearIcon from "@mui/icons-material/Clear"
 import DoneIcon from "@mui/icons-material/Done"
+import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import VisibilityIcon from "@mui/icons-material/Visibility"
-import {
-  Badge,
-  CircularProgress,
-  IconButton,
-  TextField,
-  Typography
-} from "@mui/material"
+import { CircularProgress, IconButton, TextField } from "@mui/material"
 import type { Identifier, XYCoord } from "dnd-core"
 import React, { useRef } from "react"
 import { useDrag, useDrop } from "react-dnd"
@@ -32,6 +27,7 @@ interface Props {
   onCommandUpdate: (id: string, field: string, value: string) => void
   onCommandRemove: (id: string) => void
   onCommandMove: (from: number, to: number) => void
+  onCommandRun: (index: number) => void
 }
 
 export const Command: React.FC<Props> = ({
@@ -43,7 +39,8 @@ export const Command: React.FC<Props> = ({
   onShowElement,
   onCommandUpdate,
   onCommandRemove,
-  onCommandMove
+  onCommandMove,
+  onCommandRun
 }) => {
   const ref = useRef<HTMLDivElement>(null)
   const [{ handlerId }, drop] = useDrop<
@@ -134,6 +131,11 @@ export const Command: React.FC<Props> = ({
             onClick={() => onShowElement(command.selector, command.text)}
             size="small">
             <VisibilityIcon />
+          </IconButton>
+        )}
+        {!isOn && (
+          <IconButton size="small" onClick={() => onCommandRun(index)}>
+            <PlayArrowIcon />
           </IconButton>
         )}
       </S.StatusWrapper>

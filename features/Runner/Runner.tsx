@@ -1,6 +1,5 @@
-import AddIcon from "@mui/icons-material/Add"
 import AddCircleIcon from "@mui/icons-material/AddCircle"
-import { Button, IconButton, Typography } from "@mui/material"
+import { IconButton, Typography } from "@mui/material"
 import React from "react"
 
 import { Command } from "./components/Command"
@@ -11,7 +10,14 @@ import { useRunner } from "./useRunner"
 
 export const Runner: React.FC = () => {
   const {
-    data: { on, commands, runnerCommands, cycled, allTimeCount },
+    data: {
+      on,
+      commands,
+      runnerCommands,
+      cycled,
+      allTimeCount,
+      isOneCommandRun
+    },
     handlers: {
       handleToggleOn,
       handleToggleCycled,
@@ -19,7 +25,8 @@ export const Runner: React.FC = () => {
       handleRemoveCommand,
       handleAddCommand,
       handleShowElement,
-      handleCommandMove
+      handleCommandMove,
+      handleCommandRun
     }
   } = useRunner()
 
@@ -37,12 +44,13 @@ export const Runner: React.FC = () => {
       <S.CommandsWrapper>
         {commands.map((command, index) => (
           <Command
-            key={command.id}
             index={index}
+            key={command.id}
             command={command}
             isOn={on}
             isRunning={runnerCommands[0]?.id === command.id}
             isComplete={
+              !isOneCommandRun &&
               runnerCommands.length > 0 &&
               !runnerCommands.find(
                 (runnerCommand) => runnerCommand.id === command.id
@@ -52,6 +60,7 @@ export const Runner: React.FC = () => {
             onCommandUpdate={handleCommandUpdate}
             onCommandRemove={handleRemoveCommand}
             onCommandMove={handleCommandMove}
+            onCommandRun={handleCommandRun}
           />
         ))}
         {!on && (
