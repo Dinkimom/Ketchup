@@ -1,11 +1,11 @@
-import { createRef, useEffect, useRef, useState } from "react"
-import * as uuid from "uuid"
+import { useEffect, useState } from "react"
 
 import "url-change-event"
 
 import { InteractionService, StorageService } from "~services"
 
 import type { Command } from "./types"
+import { generateId } from "./utils"
 
 export const useRunner = () => {
   const handleToggleOn = () => {
@@ -42,7 +42,7 @@ export const useRunner = () => {
   const handleAddCommand = () => {
     setCommands((commands) => [
       ...commands,
-      { id: uuid.v1(), name: "", selector: "" }
+      { id: generateId(), name: "", selector: "" }
     ])
   }
   const handleRemoveCommand = (id: string) => {

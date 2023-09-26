@@ -4,7 +4,7 @@ export const InteractionService = {
   find: async (query: string, text?: string) => {
     const possibleElements = [...document.querySelectorAll(query)]
     const elementToFind: any = text
-      ? possibleElements.find((element) => element.textContent.includes(text))
+      ? possibleElements.find((element) => element.textContent === text)
       : possibleElements[0]
 
     if (!elementToFind) {
