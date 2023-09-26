@@ -94,9 +94,14 @@ export const useRunner = () => {
     setRunnerCommands((runnerCommands) => {
       runnerCommands.shift()
 
-      if (!runnerCommands.length && !isOneCommandRun) {
-        StorageService.updateField("allTimeCount", allTimeCount + 1)
+      if (isOneCommandRun) {
         setOneCommandRun(false)
+
+        return [...runnerCommands]
+      }
+
+      if (!runnerCommands.length) {
+        StorageService.updateField("allTimeCount", allTimeCount + 1)
       }
 
       if (cycled && !runnerCommands.length) {
