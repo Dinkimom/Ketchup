@@ -1,1 +1,0 @@
-export { VersionBadge } from "./VersionBadge"
