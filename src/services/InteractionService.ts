@@ -16,8 +16,11 @@ export const InteractionService = {
 
     elementToFind.style.background = red[500]
     elementToFind.style.transition = "all 0.5s"
+    elementToFind.setAttribute("data-found", "")
 
     await InteractionService.delay(2000)
+
+    elementToFind.removeAttribute("data-found")
 
     elementToFind.style.background = backgroundBeforeChange
     elementToFind.style.transition = transitionBeforeChange

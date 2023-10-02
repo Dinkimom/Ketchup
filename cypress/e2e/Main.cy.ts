@@ -1,13 +1,8 @@
-describe("template spec", () => {
+describe("Main tests", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000")
-    // cy.restoreLocalStorage()
     localStorage.setItem("available", true)
     cy.reload()
-  })
-
-  afterEach(() => {
-    // cy.saveLocalStorage()
   })
 
   it("Показывает кнопку раскрытия, если выставлен параметр available", () => {
