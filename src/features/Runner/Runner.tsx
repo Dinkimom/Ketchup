@@ -33,7 +33,7 @@ export const Runner: React.FC = () => {
   return (
     <S.Wrapper data-testid="content">
       <Typography>
-        Всего подтверждений: <b style={{ marginLeft: 4 }}>{allTimeCount}</b>
+        Всего подтверждений: <b style={{ marginLeft: 4 }} data-testid='counter'>{allTimeCount}</b>
       </Typography>
       <Controls
         isOn={on}
@@ -64,7 +64,10 @@ export const Runner: React.FC = () => {
           />
         ))}
         {!on && (
-          <IconButton onClick={handleAddCommand} color="primary">
+          <IconButton
+            onClick={handleAddCommand}
+            color="primary"
+            data-testid="add-button">
             <AddCircleIcon sx={{ width: 32, height: 32 }} />
           </IconButton>
         )}

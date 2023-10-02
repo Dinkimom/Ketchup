@@ -25,7 +25,8 @@ export const Controls: React.FC<Props> = ({
           endIcon={<StopIcon sx={{ width: 32, height: 32 }} />}
           disableElevation
           color="error"
-          onClick={onToggleOn}>
+          onClick={onToggleOn}
+          data-testid="stop-commands">
           Стоп
         </Button>
       )
@@ -37,7 +38,8 @@ export const Controls: React.FC<Props> = ({
         size="large"
         endIcon={<PlayArrowIcon sx={{ width: 32, height: 32 }} />}
         disableElevation
-        onClick={onToggleOn}>
+        onClick={onToggleOn}
+        data-testid="run-commands">
         Запуск
       </Button>
     )
@@ -53,6 +55,7 @@ export const Controls: React.FC<Props> = ({
             onChange={onToggleCycled}
             checked={isCycled}
             disabled={isOn}
+            name="cycled"
           />
         }
         label="Цикличный запуск"

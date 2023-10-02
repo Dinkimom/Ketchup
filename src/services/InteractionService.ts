@@ -2,7 +2,7 @@ import { red } from "@mui/material/colors"
 
 export const InteractionService = {
   find: async (query: string, text?: string) => {
-    const possibleElements = [...document.querySelectorAll(query) as any]
+    const possibleElements = [...(document.querySelectorAll(query) as any)]
     const elementToFind: any = text
       ? possibleElements.find((element) => element.textContent === text)
       : possibleElements[0]
@@ -41,8 +41,11 @@ export const InteractionService = {
     const elementToClick = await InteractionService.waitFor(query, text)
 
     elementToClick.click()
+    elementToClick.setAttribute("data-clicked", "")
 
     await InteractionService.delay(3000)
+
+    elementToClick.removeAttribute("data-clicked")
   },
   delay(time: number) {
     return new Promise((resolve) => setTimeout(resolve, time))

@@ -6,7 +6,8 @@ import { CircularProgress, IconButton, TextField } from "@mui/material"
 import type { Identifier, XYCoord } from "dnd-core"
 import React, { useRef } from "react"
 import { useDrag, useDrop } from "react-dnd"
-import type { Command as CommandType} from '../../types'
+
+import type { Command as CommandType } from "../../types"
 import * as S from "./styled"
 
 interface DragItem {
@@ -117,22 +118,35 @@ export const Command: React.FC<Props> = ({
 
   return (
     <S.CommandWrapper
+      data-testid="command"
       key={command.id}
       style={{ opacity }}
       ref={ref}
       data-handler-id={handlerId}>
       <S.StatusWrapper>
-        {isRunning && <CircularProgress size={20} />}
-        {isComplete && <DoneIcon color="success" sx={{ fontSize: 20 }} />}
+        {isRunning && (
+          <CircularProgress size={20} data-testid="command-running-status" />
+        )}
+        {isComplete && (
+          <DoneIcon
+            color="success"
+            data-testid="command-complete-status"
+            sx={{ fontSize: 20 }}
+          />
+        )}
         {!isOn && (
           <IconButton
             onClick={() => onShowElement(command.selector, command.text)}
-            size="small">
+            size="small"
+            data-testid="show-command">
             <VisibilityIcon />
           </IconButton>
         )}
         {!isOn && (
-          <IconButton size="small" onClick={() => onCommandRun(index)}>
+          <IconButton
+            size="small"
+            onClick={() => onCommandRun(index)}
+            data-testid="run-command">
             <PlayArrowIcon />
           </IconButton>
         )}
@@ -141,6 +155,7 @@ export const Command: React.FC<Props> = ({
         <S.FirstRowValues>
           <TextField
             label="команда"
+            name="name"
             onChange={(evt) =>
               onCommandUpdate(command.id, "name", evt.target.value)
             }
@@ -150,6 +165,7 @@ export const Command: React.FC<Props> = ({
           />
           <TextField
             label="селектор"
+            name="selector"
             onChange={(evt) =>
               onCommandUpdate(command.id, "selector", evt.target.value)
             }
@@ -160,6 +176,7 @@ export const Command: React.FC<Props> = ({
         </S.FirstRowValues>
         <TextField
           label="текст"
+          name="text"
           onChange={(evt) =>
             onCommandUpdate(command.id, "text", evt.target.value)
           }
@@ -171,6 +188,7 @@ export const Command: React.FC<Props> = ({
         />
       </S.ValuesWrapper>
       <IconButton
+        data-testid="delete-command"
         onClick={() => onCommandRemove(command.id)}
         disabled={isOn}
         style={{ visibility: isOn ? "hidden" : "visible" }}

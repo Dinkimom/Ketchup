@@ -2,6 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import Content from './content'
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import { Main } from './testLanding';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Main />,
+  },
+]);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -9,6 +21,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Content />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

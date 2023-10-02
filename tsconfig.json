@@ -8,6 +8,7 @@
         "./*"
       ]
     },
-    "baseUrl": "."
+    "baseUrl": ".",
+    "allowImportingTsExtensions": true
   }
 }
