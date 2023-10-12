@@ -2,9 +2,9 @@ import { useEffect, useState } from "react"
 
 import "url-change-event"
 
+import { InteractionService, StorageService } from "../../services"
 import type { Command } from "./types"
 import { generateId } from "./utils"
-import { InteractionService, StorageService } from "../../services"
 
 export const useRunner = () => {
   const handleToggleOn = () => {
@@ -80,6 +80,40 @@ export const useRunner = () => {
 
   const runCommand = async () => {
     const commandToRun = runnerCommands[0]
+
+    if (commandToRun.name === "doUntil") {
+      const elementToCheck = await InteractionService.find(
+        commandToRun.selector,
+        commandToRun.text
+      )
+      if (!elementToCheck) {
+        const cycleEnd = runnerCommands.findIndex(
+          (command) => command.name === "end"
+        )
+        setRunnerCommands((runnerCommands) => runnerCommands.slice(cycleEnd + 1))
+        return
+      } else {
+        runnerCommands.shift()
+        setRunnerCommands([...runnerCommands])
+        return
+      }
+    }
+
+    if (commandToRun.name === "end") {
+      const cycleEndIndex = commands.findIndex(
+        (command) => command.id === commandToRun.id
+      )
+      const cycleStartIndex = commands.findLastIndex(
+        (command, index) => index < cycleEndIndex && command.name === "doUntil"
+      )
+      setRunnerCommands((runnerCommands) => {
+        return [
+          ...commands.slice(cycleStartIndex, cycleEndIndex),
+          ...runnerCommands
+        ]
+      })
+      return
+    }
 
     await (InteractionService as any)[commandToRun.name](
       commandToRun.selector,

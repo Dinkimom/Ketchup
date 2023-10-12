@@ -6,6 +6,7 @@ export const Main: React.FC = () => {
     <div>
       <Button data-testid='test-button'>Click me</Button>
       <Button data-testid='test-button'>No! Click me</Button>
+      <p>Some text</p>
     </div>
   )
 }

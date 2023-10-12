@@ -10,6 +10,9 @@ import { useDrag, useDrop } from "react-dnd"
 import type { Command as CommandType } from "../../types"
 import * as S from "./styled"
 
+const NOT_RUNNABLE_COMMANDS = ['doUntil', 'end']
+const NOT_VISIBLE_COMMANDS = ['end']
+
 interface DragItem {
   index: number
   id: string
@@ -41,6 +44,9 @@ export const Command: React.FC<Props> = ({
   onCommandMove,
   onCommandRun
 }) => {
+  const canRunCommand = !NOT_RUNNABLE_COMMANDS.includes(command.name)
+  const canShowElement = !NOT_VISIBLE_COMMANDS.includes(command.name)
+
   const ref = useRef<HTMLDivElement>(null)
   const [{ handlerId }, drop] = useDrop<
     DragItem,
@@ -134,7 +140,7 @@ export const Command: React.FC<Props> = ({
             sx={{ fontSize: 20 }}
           />
         )}
-        {!isOn && (
+        {!isOn && canShowElement && (
           <IconButton
             onClick={() => onShowElement(command.selector, command.text)}
             size="small"
@@ -142,7 +148,7 @@ export const Command: React.FC<Props> = ({
             <VisibilityIcon />
           </IconButton>
         )}
-        {!isOn && (
+        {!isOn && canRunCommand && (
           <IconButton
             size="small"
             onClick={() => onCommandRun(index)}
