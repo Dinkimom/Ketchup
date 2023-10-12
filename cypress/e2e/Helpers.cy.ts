@@ -1,4 +1,4 @@
-describe("Notice tests", () => {
+describe("Helpers tests", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/helpers")
     localStorage.setItem("available", true)

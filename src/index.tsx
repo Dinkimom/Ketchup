@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 
 import Content from "./content"
 import reportWebVitals from "./reportWebVitals"
-import { Helpers, Main, Notice } from "./testLanding"
+import { Helpers, Main, Notice, Redirect } from "./testLanding"
 
 const router = createBrowserRouter([
   {
@@ -18,7 +18,11 @@ const router = createBrowserRouter([
   {
     path: "/helpers",
     element: <Helpers />
-  }
+  },
+  {
+    path: "/redirect",
+    element: <Redirect />
+  },
 ])
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
