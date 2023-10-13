@@ -7,6 +7,7 @@ export const Main: React.FC = () => {
       <Button data-testid='test-button'>Click me</Button>
       <Button data-testid='test-button'>No! Click me</Button>
       <p>Some text</p>
+      <a href='/redirect'>Link</a>
     </div>
   )
 }

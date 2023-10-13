@@ -6,41 +6,39 @@ import { InteractionService, StorageService } from "../../services"
 import type { Command } from "./types"
 import { generateId } from "./utils"
 
+const useStorageServiceState = (name: string) => {
+  const [state, setState] = useState(StorageService.getField(name as any))
+
+  useEffect(() => {
+    StorageService.updateField(name as any, state)
+  }, [state])
+
+  return [state, setState]
+}
+
 export const useRunner = () => {
+  const [on, setOn] = useStorageServiceState("on")
+  const [cycled, setCycled] = useStorageServiceState("cycled")
+  const [allTimeCount, setAllTimeCount] = useStorageServiceState("allTimeCount")
+  const [runnerCommands, setRunnerCommands] =
+    useStorageServiceState("runnerCommands")
+  const [commands, setCommands] = useStorageServiceState("commands")
+  const [commandTestingMode, setCommandTestingMode] = useState(false)
+
   const handleToggleOn = () => {
     if (runnerCommands.length) {
       setRunnerCommands([])
-      setOneCommandRun(false)
-      StorageService.updateField("runnerCommands", [])
-      StorageService.updateField("stopped", true)
+      setOn(false)
     } else {
       setRunnerCommands([...commands])
-      setOneCommandRun(false)
-      StorageService.updateField("stopped", false)
+      setOn(true)
     }
   }
 
-  useEffect(() => {
-    const previousRunnerCommands = StorageService.getField("runnerCommands")
-
-    if (previousRunnerCommands.length > 0) {
-      setRunnerCommands(previousRunnerCommands)
-      StorageService.updateField("runnerCommands", [])
-    }
-  }, [])
-
-  const [cycled, setCycled] = useState(StorageService.getField("cycled"))
   const handleToggleCycled = () => {
     setCycled(!cycled)
-    StorageService.updateField("cycled", !cycled)
   }
 
-  const allTimeCount = StorageService.getField("allTimeCount")
-
-  const [isOneCommandRun, setOneCommandRun] = useState(false)
-  const [commands, setCommands] = useState<Command[]>(
-    StorageService.getField("commands")
-  )
   const handleAddCommand = () => {
     setCommands((commands) => [
       ...commands,
@@ -60,7 +58,6 @@ export const useRunner = () => {
     commandToUpdate[field] = value
     setCommands([...commands])
   }
-  const [runnerCommands, setRunnerCommands] = useState<Command[]>([])
 
   const handleCommandMove = (from: number, to: number) => {
     const updatedCommands = [...commands]
@@ -73,107 +70,77 @@ export const useRunner = () => {
   }
 
   const handleCommandRun = (index: number) => {
+    setCommandTestingMode(true)
     setRunnerCommands([commands[index]])
-    setOneCommandRun(true)
-    StorageService.updateField("stopped", false)
+    setOn(true)
   }
 
   const runCommand = async () => {
-    const commandToRun = runnerCommands[0]
+    if (on) {
+      const commandToRun = runnerCommands[0]
 
-    if (commandToRun.name === "doUntil") {
-      const elementToCheck = await InteractionService.find(
+      // if (commandToRun.name === "doUntil") {
+      //   const elementToCheck = await InteractionService.find(
+      //     commandToRun.selector,
+      //     commandToRun.text
+      //   )
+      //   if (!elementToCheck) {
+      //     const cycleEnd = runnerCommands.findIndex(
+      //       (command) => command.name === "end"
+      //     )
+      //     setRunnerCommands((runnerCommands) =>
+      //       runnerCommands.slice(cycleEnd + 1)
+      //     )
+      //     return
+      //   } else {
+      //     runnerCommands.shift()
+      //     setRunnerCommands([...runnerCommands])
+      //     return
+      //   }
+      // }
+
+      // if (commandToRun.name === "end") {
+      //   const cycleEndIndex = commands.findIndex(
+      //     (command) => command.id === commandToRun.id
+      //   )
+      //   const cycleStartIndex = commands.findLastIndex(
+      //     (command, index) => index < cycleEndIndex && command.name === "doUntil"
+      //   )
+      //   setRunnerCommands((runnerCommands) => {
+      //     return [
+      //       ...commands.slice(cycleStartIndex, cycleEndIndex),
+      //       ...runnerCommands
+      //     ]
+      //   })
+      //   return
+      // }
+
+      await (InteractionService as any)[commandToRun.name](
         commandToRun.selector,
         commandToRun.text
       )
-      if (!elementToCheck) {
-        const cycleEnd = runnerCommands.findIndex(
-          (command) => command.name === "end"
-        )
-        setRunnerCommands((runnerCommands) =>
-          runnerCommands.slice(cycleEnd + 1)
-        )
-        return
-      } else {
-        runnerCommands.shift()
-        setRunnerCommands([...runnerCommands])
-        return
-      }
-    }
 
-    if (commandToRun.name === "end") {
-      const cycleEndIndex = commands.findIndex(
-        (command) => command.id === commandToRun.id
-      )
-      const cycleStartIndex = commands.findLastIndex(
-        (command, index) => index < cycleEndIndex && command.name === "doUntil"
-      )
       setRunnerCommands((runnerCommands) => {
-        return [
-          ...commands.slice(cycleStartIndex, cycleEndIndex),
-          ...runnerCommands
-        ]
+        runnerCommands.shift()
+
+        if (cycled && !runnerCommands.length) {
+          return [...commands]
+        } else {
+          return [...runnerCommands]
+        }
       })
-      return
     }
-
-    await (InteractionService as any)[commandToRun.name](
-      commandToRun.selector,
-      commandToRun.text
-    )
-
-    if (StorageService.getField("stopped")) {
-      return
-    }
-
-    setRunnerCommands((runnerCommands) => {
-      runnerCommands.shift()
-
-      if (isOneCommandRun) {
-        setOneCommandRun(false)
-
-        return [...runnerCommands]
-      }
-
-      if (!runnerCommands.length) {
-        StorageService.updateField("allTimeCount", allTimeCount + 1)
-      }
-
-      if (cycled && !runnerCommands.length) {
-        return [...commands]
-      } else {
-        return [...runnerCommands]
-      }
-    })
   }
 
   useEffect(() => {
     if (runnerCommands.length > 0) {
       runCommand()
+    } else {
+      setOn(false)
+      setCommandTestingMode(false)
+      setAllTimeCount(allTimeCount + 1)
     }
   }, [runnerCommands])
-
-  useEffect(() => {
-    StorageService.updateField("commands", commands)
-  }, [commands])
-
-  const handleUrlChange = () => {
-    if (runnerCommands.length) {
-      runnerCommands.shift()
-      StorageService.updateField("popupOpened", true)
-
-      if (!cycled) {
-        StorageService.updateField("runnerCommands", runnerCommands)
-      } else {
-        if (runnerCommands.length) {
-          StorageService.updateField("runnerCommands", runnerCommands)
-        } else {
-          StorageService.updateField("allTimeCount", allTimeCount + 1)
-          StorageService.updateField("runnerCommands", commands)
-        }
-      }
-    }
-  }
 
   const handleShowElement = async (selector: string, text?: string) => {
     try {
@@ -187,22 +154,14 @@ export const useRunner = () => {
     }
   }
 
-  useEffect(() => {
-    window.addEventListener("urlchangeevent", handleUrlChange)
-
-    return () => {
-      window.removeEventListener("urlchangeevent", handleUrlChange)
-    }
-  }, [handleUrlChange])
-
   return {
     data: {
-      on: runnerCommands.length > 0,
+      on,
       commands,
       runnerCommands,
       cycled,
       allTimeCount,
-      isOneCommandRun
+      commandTestingMode // todo
     },
     handlers: {
       handleToggleOn,

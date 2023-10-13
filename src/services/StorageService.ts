@@ -4,7 +4,7 @@ type FieldName =
   | "popupOpened"
   | "runnerCommands"
   | "cycled"
-  | "stopped"
+  | "on"
   | "available"
 
 const FIELD_NAMES: FieldName[] = [
@@ -13,7 +13,7 @@ const FIELD_NAMES: FieldName[] = [
   "popupOpened",
   "runnerCommands",
   "cycled",
-  "stopped"
+  "on"
 ]
 
 export const StorageService = {
@@ -40,6 +40,6 @@ const DEFAULT_VALUES: { [key in FieldName]: unknown } = {
   popupOpened: false,
   runnerCommands: [],
   cycled: true,
-  stopped: true,
+  on: false,
   available: false
 }

@@ -17,7 +17,7 @@ export const Runner: React.FC = () => {
       runnerCommands,
       cycled,
       allTimeCount,
-      isOneCommandRun
+      commandTestingMode
     },
     handlers: {
       handleToggleOn,
@@ -74,8 +74,8 @@ export const Runner: React.FC = () => {
             isOn={on}
             isRunning={runnerCommands[0]?.id === command.id}
             isComplete={
-              !isOneCommandRun &&
-              runnerCommands.length > 0 &&
+              !commandTestingMode &&
+              on &&
               !runnerCommands.find(
                 (runnerCommand) => runnerCommand.id === command.id
               )

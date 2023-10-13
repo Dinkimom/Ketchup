@@ -16,7 +16,7 @@ export const InteractionService = {
     const transitionBeforeChange = elementToFind.style.transition
     const backgroundBeforeChange = elementToFind.style.background
 
-    elementToFind.style.background = "red"
+    elementToFind.style.background = red[400]
     elementToFind.style.transition = "all 0.5s"
     elementToFind.setAttribute("data-found", "")
 
@@ -45,10 +45,9 @@ export const InteractionService = {
   click: async (query: string, text?: string) => {
     const elementToClick = await InteractionService.waitFor(query, text)
 
-    elementToClick.click()
     elementToClick.setAttribute("data-clicked", "")
 
-    await InteractionService.delay(3000)
+    elementToClick.click()
 
     elementToClick.removeAttribute("data-clicked")
   },
