@@ -9,9 +9,10 @@ import { useDrag, useDrop } from "react-dnd"
 
 import type { Command as CommandType } from "../../types"
 import * as S from "./styled"
+import { blue } from "@mui/material/colors"
 
-const NOT_RUNNABLE_COMMANDS = ['doUntil', 'end']
-const NOT_VISIBLE_COMMANDS = ['end']
+const NOT_RUNNABLE_COMMANDS = ["doUntil", "end"]
+const NOT_VISIBLE_COMMANDS = ["end"]
 
 interface DragItem {
   index: number
@@ -25,6 +26,7 @@ interface Props {
   isOn: boolean
   isRunning: boolean
   isComplete: boolean
+  isInCycle: boolean
   onShowElement: (selector: string, text: string) => void
   onCommandUpdate: (id: string, field: string, value: string) => void
   onCommandRemove: (id: string) => void
@@ -38,6 +40,7 @@ export const Command: React.FC<Props> = ({
   isOn,
   isRunning,
   isComplete,
+  isInCycle,
   onShowElement,
   onCommandUpdate,
   onCommandRemove,
@@ -126,7 +129,13 @@ export const Command: React.FC<Props> = ({
     <S.CommandWrapper
       data-testid="command"
       key={command.id}
-      style={{ opacity }}
+      style={{
+        opacity,
+        backgroundColor:
+          isInCycle || command.name === "doUntil" || command.name === "end"
+            ? blue[100]
+            : undefined
+      }}
       ref={ref}
       data-handler-id={handlerId}>
       <S.StatusWrapper>

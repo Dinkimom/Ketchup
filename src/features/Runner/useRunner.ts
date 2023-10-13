@@ -90,7 +90,9 @@ export const useRunner = () => {
         const cycleEnd = runnerCommands.findIndex(
           (command) => command.name === "end"
         )
-        setRunnerCommands((runnerCommands) => runnerCommands.slice(cycleEnd + 1))
+        setRunnerCommands((runnerCommands) =>
+          runnerCommands.slice(cycleEnd + 1)
+        )
         return
       } else {
         runnerCommands.shift()

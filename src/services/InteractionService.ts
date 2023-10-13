@@ -11,10 +11,12 @@ export const InteractionService = {
       return undefined
     }
 
+    console.log("🔍 Found an element: ", elementToFind)
+
     const transitionBeforeChange = elementToFind.style.transition
     const backgroundBeforeChange = elementToFind.style.background
 
-    elementToFind.style.background = 'red'
+    elementToFind.style.background = "red"
     elementToFind.style.transition = "all 0.5s"
     elementToFind.setAttribute("data-found", "")
 

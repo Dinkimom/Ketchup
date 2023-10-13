@@ -22,7 +22,7 @@ function IndexContent() {
 
   const handleTogglePopup = () => {
     setShowPopup(!showPopup)
-    StorageService.updateField("popupOpened", String(!showPopup))
+    StorageService.updateField("popupOpened", !showPopup)
   }
 
   if (!StorageService.getField("available")) {
