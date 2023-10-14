@@ -11,7 +11,7 @@ export const InteractionService = {
       return undefined
     }
 
-    // console.log("🔍 Found an element: ", elementToFind)
+    console.log("🔍 Found an element: ", elementToFind)
 
     const transitionBeforeChange = elementToFind.style.transition
     const backgroundBeforeChange = elementToFind.style.background
