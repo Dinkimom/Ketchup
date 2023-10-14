@@ -8,6 +8,7 @@ export const Wrapper = styled("div")`
   padding: 16px;
   align-items: center;
   max-height: calc(80vh - 100px);
+  user-select: none;
 `
 
 export const CommandsWrapper = styled("div")`

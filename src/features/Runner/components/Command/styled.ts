@@ -1,5 +1,4 @@
 import styled from "@emotion/styled"
-import { Typography } from "@mui/material"
 import { grey } from "@mui/material/colors"
 
 export const CommandWrapper = styled("div")`

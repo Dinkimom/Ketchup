@@ -125,7 +125,8 @@ export const Command: React.FC<Props> = ({
     },
     collect: (monitor: any) => ({
       isDragging: monitor.isDragging()
-    })
+    }),
+    canDrag: !isOn
   })
 
   const opacity = isDragging ? 0 : 1
