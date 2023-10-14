@@ -2,17 +2,23 @@ import ClearIcon from "@mui/icons-material/Clear"
 import DoneIcon from "@mui/icons-material/Done"
 import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import VisibilityIcon from "@mui/icons-material/Visibility"
-import { CircularProgress, IconButton, TextField } from "@mui/material"
+import {
+  CircularProgress,
+  IconButton,
+  MenuItem,
+  Select,
+  TextField
+} from "@mui/material"
+import { blue } from "@mui/material/colors"
 import type { Identifier, XYCoord } from "dnd-core"
 import React, { useRef } from "react"
 import { useDrag, useDrop } from "react-dnd"
 
-import type { Command as CommandType } from "../../types"
+import { CommandName, type Command as CommandType } from "../../types"
 import * as S from "./styled"
-import { blue } from "@mui/material/colors"
 
-const NOT_RUNNABLE_COMMANDS = ["doUntil", "end"]
-const NOT_VISIBLE_COMMANDS = ["end"]
+const NOT_RUNNABLE_COMMANDS = [CommandName.whileVisible, CommandName.end]
+const NOT_VISIBLE_COMMANDS = [CommandName.end]
 
 interface DragItem {
   index: number
@@ -132,7 +138,7 @@ export const Command: React.FC<Props> = ({
       style={{
         opacity,
         backgroundColor:
-          isInCycle || command.name === "doUntil" || command.name === "end"
+          isInCycle || NOT_RUNNABLE_COMMANDS.includes(command.name)
             ? blue[100]
             : undefined
       }}

@@ -25,69 +25,69 @@ function IndexContent() {
     StorageService.updateField("popupOpened", !showPopup)
   }
 
-  if (!StorageService.getField("available")) {
-    return null
-  }
-
   return (
-    <CacheProvider value={muiCache}>
-      <DndProvider backend={HTML5Backend}>
-        {showPopup && (
-          <Card
-            style={{
-              width: 450,
-              height: "calc(80vh - 48px)",
-              position: "fixed",
-              top: 24,
-              right: 24
-            }}>
-            <Runner />
-          </Card>
+    <DndProvider backend={HTML5Backend}>
+      <CacheProvider value={muiCache}>
+        {StorageService.getField("available") && (
+          <>
+            {showPopup && (
+              <Card
+                style={{
+                  width: 450,
+                  height: "calc(80vh - 48px)",
+                  position: "fixed",
+                  top: 24,
+                  right: 24
+                }}>
+                <Runner />
+              </Card>
+            )}
+            {!showPopup && (
+              <div
+                data-testid="toggle-button"
+                onClick={handleTogglePopup}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 25,
+                  background: "red",
+                  position: "fixed",
+                  top: 12,
+                  right: 12,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 24,
+                  cursor: "pointer"
+                }}>
+                🍅
+              </div>
+            )}
+            {showPopup && (
+              <div
+                data-testid="toggle-button"
+                onClick={handleTogglePopup}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 25,
+                  background: "lightgrey",
+                  position: "fixed",
+                  top: 12,
+                  right: 12,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 24,
+                  cursor: "pointer"
+                }}>
+                <ClearIcon />
+              </div>
+            )}
+          </>
         )}
-        {!showPopup && (
-          <div
-            data-testid="toggle-button"
-            onClick={handleTogglePopup}
-            style={{
-              width: 50,
-              height: 50,
-              borderRadius: 25,
-              background: "red",
-              position: "fixed",
-              top: 12,
-              right: 12,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 24,
-              cursor: "pointer"
-            }}>
-            🍅
-          </div>
-        )}
-        {showPopup && (
-          <div
-            data-testid="toggle-button"
-            onClick={handleTogglePopup}
-            style={{
-              width: 50,
-              height: 50,
-              borderRadius: 25,
-              background: "lightgrey",
-              position: "fixed",
-              top: 12,
-              right: 12,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 24,
-              cursor: "pointer"
-            }}>
-            <ClearIcon />
-          </div>
-        )}
-      </DndProvider>
-    </CacheProvider>
+      </CacheProvider>
+    </DndProvider>
   )
 }
 

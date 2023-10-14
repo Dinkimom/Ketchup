@@ -6,8 +6,8 @@ import { Command } from "./components/Command"
 import { Controls } from "./components/Controls"
 import { VersionBadge } from "./components/VersionBadge"
 import * as S from "./styled"
-import type { Command as CommandType } from "./types"
 import { useRunner } from "./useRunner"
+import { getIsInCycle } from "./utils"
 
 export const Runner: React.FC = () => {
   const {
@@ -31,25 +31,6 @@ export const Runner: React.FC = () => {
     }
   } = useRunner()
 
-  const getIsInCycle = (commands: CommandType[], command: CommandType) => {
-    const commandIndex = commands.findIndex(
-      (commandToCheck) => commandToCheck.id === command.id
-    )
-    const cycleStartIndex = commands.findLastIndex(
-      (commandToCheck, index) =>
-        commandToCheck.name === "doUntil" && index < commandIndex
-    )
-    const cycleEndIndex = commands.findIndex(
-      (commandToCheck, index) =>
-        commandToCheck.name === "end" && index > commandIndex
-    )
-    const isIntersection = commands
-      .slice(cycleStartIndex + 1, cycleEndIndex - 1)
-      .every((command) => command.name !== "doUntil" && command.name !== "end")
-
-    return cycleStartIndex !== -1 && cycleEndIndex !== -1 && isIntersection
-  }
-
   return (
     <S.Wrapper data-testid="content">
       <Typography>
@@ -72,7 +53,7 @@ export const Runner: React.FC = () => {
             command={command}
             isInCycle={getIsInCycle(commands, command)}
             isOn={on}
-            isRunning={runnerCommands[0]?.id === command.id}
+            isRunning={on && runnerCommands[0]?.id === command.id}
             isComplete={
               !commandTestingMode &&
               on &&

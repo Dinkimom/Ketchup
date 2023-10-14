@@ -1,2 +1,3 @@
 export { InteractionService } from "./InteractionService"
 export { StorageService } from "./StorageService"
+export { useStorageServiceState } from "./useStorageServiceState"

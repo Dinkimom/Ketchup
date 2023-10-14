@@ -2,19 +2,9 @@ import { useEffect, useState } from "react"
 
 import "url-change-event"
 
-import { InteractionService, StorageService } from "../../services"
-import type { Command } from "./types"
+import { InteractionService, useStorageServiceState } from "../../services"
+import { CommandName, type Command } from "./types"
 import { generateId } from "./utils"
-
-const useStorageServiceState = (name: string) => {
-  const [state, setState] = useState(StorageService.getField(name as any))
-
-  useEffect(() => {
-    StorageService.updateField(name as any, state)
-  }, [state])
-
-  return [state, setState]
-}
 
 export const useRunner = () => {
   const [on, setOn] = useStorageServiceState("on")
@@ -26,13 +16,8 @@ export const useRunner = () => {
   const [commandTestingMode, setCommandTestingMode] = useState(false)
 
   const handleToggleOn = () => {
-    if (runnerCommands.length) {
-      setRunnerCommands([])
-      setOn(false)
-    } else {
-      setRunnerCommands([...commands])
-      setOn(true)
-    }
+    setRunnerCommands(on ? [] : [...commands])
+    setOn(!on)
   }
 
   const handleToggleCycled = () => {
@@ -45,17 +30,21 @@ export const useRunner = () => {
       { id: generateId(), name: "", selector: "" }
     ])
   }
+
   const handleRemoveCommand = (id: string) => {
     setCommands((commands) => commands.filter((command) => command.id !== id))
   }
+
   const handleCommandUpdate = (
     id: string,
     field: "name" | "selector" | "text",
     value: string
   ) => {
-    const commandToUpdate: any = commands.find((command) => command.id === id)
+    const commandToUpdate: Command = commands.find(
+      (command) => command.id === id
+    )
 
-    commandToUpdate[field] = value
+    commandToUpdate[field] = value as CommandName
     setCommands([...commands])
   }
 
@@ -75,69 +64,69 @@ export const useRunner = () => {
     setOn(true)
   }
 
-  const runCommand = async () => {
-    if (on) {
-      const commandToRun = runnerCommands[0]
-
-      // if (commandToRun.name === "doUntil") {
-      //   const elementToCheck = await InteractionService.find(
-      //     commandToRun.selector,
-      //     commandToRun.text
-      //   )
-      //   if (!elementToCheck) {
-      //     const cycleEnd = runnerCommands.findIndex(
-      //       (command) => command.name === "end"
-      //     )
-      //     setRunnerCommands((runnerCommands) =>
-      //       runnerCommands.slice(cycleEnd + 1)
-      //     )
-      //     return
-      //   } else {
-      //     runnerCommands.shift()
-      //     setRunnerCommands([...runnerCommands])
-      //     return
-      //   }
-      // }
-
-      // if (commandToRun.name === "end") {
-      //   const cycleEndIndex = commands.findIndex(
-      //     (command) => command.id === commandToRun.id
-      //   )
-      //   const cycleStartIndex = commands.findLastIndex(
-      //     (command, index) => index < cycleEndIndex && command.name === "doUntil"
-      //   )
-      //   setRunnerCommands((runnerCommands) => {
-      //     return [
-      //       ...commands.slice(cycleStartIndex, cycleEndIndex),
-      //       ...runnerCommands
-      //     ]
-      //   })
-      //   return
-      // }
-
-      await (InteractionService as any)[commandToRun.name](
-        commandToRun.selector,
-        commandToRun.text
-      )
-
-      setRunnerCommands((runnerCommands) => {
-        runnerCommands.shift()
-
-        if (cycled && !runnerCommands.length) {
-          return [...commands]
+  const runCommand = async (commandToRun: Command) => {
+    switch (commandToRun.name) {
+      case CommandName.whileVisible: {
+        const elementToCheck = await InteractionService.find(
+          commandToRun.selector,
+          commandToRun.text
+        )
+        const cycleStartIndex = commands.findIndex(
+          (commandToCheck) => commandToCheck.id === commandToRun.id
+        )
+        const cycleEndIndex = commands.findIndex(
+          (command, index) =>
+            cycleStartIndex < index && command.name === CommandName.end
+        )
+        if (elementToCheck) {
+          setRunnerCommands([...runnerCommands.slice(1)])
         } else {
-          return [...runnerCommands]
+          setRunnerCommands([...commands.slice(cycleEndIndex + 1)])
         }
-      })
+        return
+      }
+      case CommandName.end: {
+        const cycleEndIndex = commands.findIndex(
+          (commandToCheck) => commandToCheck.id === commandToRun.id
+        )
+        const cycleStartIndex = commands.findLastIndex(
+          (command, index) =>
+            index < cycleEndIndex && command.name === CommandName.whileVisible
+        )
+        setRunnerCommands([
+          ...commands.slice(cycleStartIndex, cycleEndIndex + 1),
+          ...runnerCommands
+        ])
+        return
+      }
+      default: {
+        await (InteractionService as any)[commandToRun.name](
+          commandToRun.selector,
+          commandToRun.text
+        )
+
+        setRunnerCommands((runnerCommands) => {
+          runnerCommands.shift()
+
+          if (cycled && runnerCommands?.length === 0) {
+            return [...commands]
+          }
+
+          return [...runnerCommands]
+        })
+      }
     }
   }
 
   useEffect(() => {
-    if (runnerCommands.length > 0) {
-      runCommand()
+    if (on && runnerCommands.length > 0) {
+      runCommand(runnerCommands[0])
     } else {
       setOn(false)
       setCommandTestingMode(false)
+    }
+
+    if (on && runnerCommands.length === 0) {
       setAllTimeCount(allTimeCount + 1)
     }
   }, [runnerCommands])
@@ -147,7 +136,7 @@ export const useRunner = () => {
       const elementToFind = await InteractionService.find(selector, text)
 
       if (!elementToFind) {
-        alert("Элемент не найден!")
+        throw new Error()
       }
     } catch {
       alert("Элемент не найден!")
@@ -161,7 +150,7 @@ export const useRunner = () => {
       runnerCommands,
       cycled,
       allTimeCount,
-      commandTestingMode // todo
+      commandTestingMode
     },
     handlers: {
       handleToggleOn,
