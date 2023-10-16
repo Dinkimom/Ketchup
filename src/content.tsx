@@ -2,15 +2,15 @@ import createCache from "@emotion/cache"
 import { CacheProvider } from "@emotion/react"
 import ClearIcon from "@mui/icons-material/Clear"
 import { Card } from "@mui/material"
-import { useState } from "react"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 
 import { Runner } from "./features/Runner"
-import { StorageService, useStorageServiceState } from "./services"
+import { useStorageServiceState } from "./services"
 
 function IndexContent() {
   const [showPopup, setShowPopup] = useStorageServiceState("popupOpened")
+  const [available] = useStorageServiceState("available")
   const root = document.querySelector("plasmo-csui")?.shadowRoot
   const muiCache = createCache({
     key: "mui",
@@ -22,7 +22,7 @@ function IndexContent() {
     setShowPopup(!showPopup)
   }
 
-  if (!StorageService.getField("available")) {
+  if (!available) {
     return null
   }
 

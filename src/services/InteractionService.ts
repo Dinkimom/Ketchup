@@ -14,9 +14,9 @@ export const InteractionService = {
     console.log("🔍 Found an element: ", elementToFind)
 
     const transitionBeforeChange = elementToFind.style.transition
-    const backgroundBeforeChange = elementToFind.style.background
+    const boxShadowBeforeChange = elementToFind.style.boxShadow
 
-    elementToFind.style.background = red[400]
+    elementToFind.style.boxShadow = `rgba(0, 0, 0, 0.16) 0px 1px 4px, ${red[600]} 0px 0px 0px 8px`
     elementToFind.style.transition = "all 0.5s"
     elementToFind.setAttribute("data-found", "")
 
@@ -24,7 +24,7 @@ export const InteractionService = {
 
     elementToFind.removeAttribute("data-found")
 
-    elementToFind.style.background = backgroundBeforeChange
+    elementToFind.style.boxShadow = boxShadowBeforeChange
     elementToFind.style.transition = transitionBeforeChange
 
     return elementToFind

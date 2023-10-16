@@ -12,12 +12,14 @@ export const CommandWrapper = styled("div")`
   border: 1px solid ${grey[300]};
   position: relative;
   cursor: grab;
+  width: 100%;
 `
 
 export const ValuesWrapper = styled("div")`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
 `
 
 export const FirstRowValues = styled("div")`

@@ -174,18 +174,7 @@ export const Command: React.FC<Props> = ({
         )}
       </S.StatusWrapper>
       <S.ValuesWrapper>
-        <S.FirstRowValues>
-          <TextField
-            label="команда"
-            name="name"
-            onChange={(evt) =>
-              onCommandUpdate(command.id, "name", evt.target.value)
-            }
-            value={command.name}
-            size="small"
-            disabled={isOn}
-          />
-          <TextField
+        {/* <TextField
             label="селектор"
             name="selector"
             onChange={(evt) =>
@@ -194,8 +183,30 @@ export const Command: React.FC<Props> = ({
             value={command.selector}
             size="small"
             disabled={isOn}
-          />
-        </S.FirstRowValues>
+          /> */}
+
+        <TextField
+          label="команда"
+          name="name"
+          onChange={(evt) =>
+            onCommandUpdate(command.id, "name", evt.target.value)
+          }
+          value={command.name}
+          size="small"
+          disabled={isOn}
+        />
+        <TextField
+          label="селектор"
+          name="selector"
+          onChange={(evt) =>
+            onCommandUpdate(command.id, "selector", evt.target.value)
+          }
+          value={command.selector}
+          size="small"
+          multiline
+          maxRows={2}
+          disabled={isOn}
+        />
         <TextField
           label="текст"
           name="text"
