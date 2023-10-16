@@ -4,7 +4,9 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import {
   CircularProgress,
+  FormControl,
   IconButton,
+  InputLabel,
   MenuItem,
   Select,
   TextField
@@ -174,27 +176,26 @@ export const Command: React.FC<Props> = ({
         )}
       </S.StatusWrapper>
       <S.ValuesWrapper>
-        {/* <TextField
-            label="селектор"
-            name="selector"
+        <FormControl fullWidth size="small" disabled={isOn}>
+          <InputLabel>команда</InputLabel>
+          <Select
+            value={command.name}
+            label="команда"
             onChange={(evt) =>
-              onCommandUpdate(command.id, "selector", evt.target.value)
-            }
-            value={command.selector}
-            size="small"
-            disabled={isOn}
-          /> */}
-
-        <TextField
-          label="команда"
-          name="name"
-          onChange={(evt) =>
-            onCommandUpdate(command.id, "name", evt.target.value)
-          }
-          value={command.name}
-          size="small"
-          disabled={isOn}
-        />
+              onCommandUpdate(command.id, "name", evt.target.value)
+            }>
+            {[
+              CommandName.click,
+              CommandName.waitFor,
+              CommandName.delay,
+              CommandName.whileVisible,
+              CommandName.end,
+              CommandName.find
+            ].map((option) => (
+              <MenuItem value={option}>{option}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <TextField
           label="селектор"
           name="selector"

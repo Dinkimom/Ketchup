@@ -27,7 +27,7 @@ export const useRunner = () => {
   const handleAddCommand = () => {
     setCommands((commands) => [
       ...commands,
-      { id: generateId(), name: "", selector: "" }
+      { id: generateId(), name: CommandName.click, selector: "" }
     ])
   }
 
