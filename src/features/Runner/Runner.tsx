@@ -17,7 +17,8 @@ export const Runner: React.FC = () => {
       runnerCommands,
       cycled,
       allTimeCount,
-      commandTestingMode
+      commandTestingMode,
+      aimingCommand
     },
     handlers: {
       handleToggleOn,
@@ -27,7 +28,8 @@ export const Runner: React.FC = () => {
       handleAddCommand,
       handleShowElement,
       handleCommandMove,
-      handleCommandRun
+      handleCommandRun,
+      handleElementAim
     }
   } = useRunner()
 
@@ -53,6 +55,7 @@ export const Runner: React.FC = () => {
             command={command}
             isInCycle={getIsInCycle(commands, command)}
             isOn={on}
+            isAiming={aimingCommand === command.id}
             isRunning={on && runnerCommands[0]?.id === command.id}
             isComplete={
               !commandTestingMode &&
@@ -66,6 +69,7 @@ export const Runner: React.FC = () => {
             onCommandRemove={handleRemoveCommand}
             onCommandMove={handleCommandMove}
             onCommandRun={handleCommandRun}
+            onElementAim={handleElementAim}
           />
         ))}
         {!on && (

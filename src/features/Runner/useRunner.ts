@@ -4,7 +4,7 @@ import "url-change-event"
 
 import { InteractionService, useStorageServiceState } from "../../services"
 import { CommandName, type Command } from "./types"
-import { generateId } from "./utils"
+import { generateId, getElementInfo } from "./utils"
 
 export const useRunner = () => {
   const [on, setOn] = useStorageServiceState("on")
@@ -14,6 +14,9 @@ export const useRunner = () => {
     useStorageServiceState("runnerCommands")
   const [commands, setCommands] = useStorageServiceState("commands")
   const [commandTestingMode, setCommandTestingMode] = useState(false)
+  const [aimingCommand, setAimingCommand] = useState<undefined | string>(
+    undefined
+  )
 
   const handleToggleOn = () => {
     setRunnerCommands(on ? [] : [...commands])
@@ -37,7 +40,7 @@ export const useRunner = () => {
 
   const handleCommandUpdate = (
     id: string,
-    field: "name" | "selector" | "text",
+    field: keyof Command,
     value: string
   ) => {
     const commandToUpdate: Command = commands.find(
@@ -56,6 +59,10 @@ export const useRunner = () => {
     updatedCommands[to] = itemToMove
 
     setCommands(updatedCommands)
+  }
+
+  const handleElementAim = (id: string) => {
+    setAimingCommand(id)
   }
 
   const handleCommandRun = (index: number) => {
@@ -118,18 +125,24 @@ export const useRunner = () => {
     }
   }
 
-  useEffect(() => {
-    if (on && runnerCommands.length > 0) {
-      runCommand(runnerCommands[0])
-    } else {
-      setOn(false)
-      setCommandTestingMode(false)
+  const handleElementClick = (event: MouseEvent) => {
+    if (!aimingCommand) {
+      return
     }
 
-    if (on && runnerCommands.length === 0) {
-      setAllTimeCount(allTimeCount + 1)
-    }
-  }, [runnerCommands])
+    event.preventDefault()
+    event.stopPropagation()
+
+    const commandToChange = commands.find(
+      (command) => command.id === aimingCommand
+    )
+    const { selector, text } = getElementInfo(event.target as HTMLElement)
+    commandToChange.selector = selector
+    commandToChange.text = text
+
+    setCommands([...commands])
+    setAimingCommand(undefined)
+  }
 
   const handleShowElement = async (selector: string, text?: string) => {
     try {
@@ -143,6 +156,27 @@ export const useRunner = () => {
     }
   }
 
+  useEffect(() => {
+    if (on && runnerCommands.length > 0) {
+      runCommand(runnerCommands[0])
+    } else {
+      setOn(false)
+      setCommandTestingMode(false)
+    }
+
+    if (on && runnerCommands.length === 0) {
+      setAllTimeCount(allTimeCount + 1)
+    }
+  }, [runnerCommands])
+
+  useEffect(() => {
+    document.addEventListener("click", handleElementClick)
+
+    return () => {
+      document.removeEventListener("click", handleElementClick)
+    }
+  }, [aimingCommand])
+
   return {
     data: {
       on,
@@ -150,7 +184,8 @@ export const useRunner = () => {
       runnerCommands,
       cycled,
       allTimeCount,
-      commandTestingMode
+      commandTestingMode,
+      aimingCommand
     },
     handlers: {
       handleToggleOn,
@@ -160,7 +195,8 @@ export const useRunner = () => {
       handleAddCommand,
       handleShowElement,
       handleCommandMove,
-      handleCommandRun
+      handleCommandRun,
+      handleElementAim
     }
   }
 }

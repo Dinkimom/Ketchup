@@ -20,8 +20,19 @@ export const getIsInCycle = (commands: Command[], command: Command) => {
     .slice(cycleStartIndex + 1, cycleEndIndex - 1)
     .every(
       (command) =>
-        command.name !== CommandName.whileVisible && command.name !== CommandName.end
+        command.name !== CommandName.whileVisible &&
+        command.name !== CommandName.end
     )
 
   return cycleStartIndex !== -1 && cycleEndIndex !== -1 && isIntersection
+}
+
+export const getElementInfo = (element: HTMLElement) => {
+  const classList = [...element.classList]
+  const className = classList.length ? `.${classList.join(".")}` : ""
+
+  return {
+    selector: `${element.tagName}${className}`,
+    text: element.textContent
+  }
 }

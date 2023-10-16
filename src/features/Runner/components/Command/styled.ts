@@ -3,7 +3,7 @@ import { grey } from "@mui/material/colors"
 
 export const CommandWrapper = styled("div")`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   padding: 12px 4px;
   border-radius: 5px;

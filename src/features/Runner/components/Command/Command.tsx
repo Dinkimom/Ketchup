@@ -1,3 +1,4 @@
+import CenterFocusStrongIcon from "@mui/icons-material/CenterFocusStrong"
 import ClearIcon from "@mui/icons-material/Clear"
 import DoneIcon from "@mui/icons-material/Done"
 import PlayArrowIcon from "@mui/icons-material/PlayArrow"
@@ -21,6 +22,14 @@ import * as S from "./styled"
 
 const NOT_RUNNABLE_COMMANDS = [CommandName.whileVisible, CommandName.end]
 const NOT_VISIBLE_COMMANDS = [CommandName.end]
+const COMMAND_NAME_OPTIONS = [
+  CommandName.click,
+  CommandName.waitFor,
+  CommandName.delay,
+  CommandName.whileVisible,
+  CommandName.end,
+  CommandName.find
+]
 
 interface DragItem {
   index: number
@@ -35,6 +44,8 @@ interface Props {
   isRunning: boolean
   isComplete: boolean
   isInCycle: boolean
+  isAiming: boolean
+  onElementAim: (id: string) => void
   onShowElement: (selector: string, text: string) => void
   onCommandUpdate: (id: string, field: string, value: string) => void
   onCommandRemove: (id: string) => void
@@ -49,6 +60,8 @@ export const Command: React.FC<Props> = ({
   isRunning,
   isComplete,
   isInCycle,
+  isAiming,
+  onElementAim,
   onShowElement,
   onCommandUpdate,
   onCommandRemove,
@@ -158,14 +171,6 @@ export const Command: React.FC<Props> = ({
             sx={{ fontSize: 20 }}
           />
         )}
-        {!isOn && canShowElement && (
-          <IconButton
-            onClick={() => onShowElement(command.selector, command.text)}
-            size="small"
-            data-testid="show-command">
-            <VisibilityIcon />
-          </IconButton>
-        )}
         {!isOn && canRunCommand && (
           <IconButton
             size="small"
@@ -174,24 +179,36 @@ export const Command: React.FC<Props> = ({
             <PlayArrowIcon />
           </IconButton>
         )}
+        {!isOn && canShowElement && (
+          <IconButton
+            color={isAiming ? "primary" : undefined}
+            onClick={(event) => {
+              event.stopPropagation()
+              onElementAim(command.id)
+            }}
+            size="small">
+            <CenterFocusStrongIcon />
+          </IconButton>
+        )}
+        {!isOn && canShowElement && (
+          <IconButton
+            onClick={() => onShowElement(command.selector, command.text)}
+            size="small"
+            data-testid="show-command">
+            <VisibilityIcon />
+          </IconButton>
+        )}
       </S.StatusWrapper>
       <S.ValuesWrapper>
         <FormControl fullWidth size="small" disabled={isOn}>
-          <InputLabel>команда</InputLabel>
+          <InputLabel shrink>команда</InputLabel>
           <Select
             value={command.name}
             label="команда"
             onChange={(evt) =>
               onCommandUpdate(command.id, "name", evt.target.value)
             }>
-            {[
-              CommandName.click,
-              CommandName.waitFor,
-              CommandName.delay,
-              CommandName.whileVisible,
-              CommandName.end,
-              CommandName.find
-            ].map((option) => (
+            {COMMAND_NAME_OPTIONS.map((option) => (
               <MenuItem value={option}>{option}</MenuItem>
             ))}
           </Select>
@@ -205,8 +222,9 @@ export const Command: React.FC<Props> = ({
           value={command.selector}
           size="small"
           multiline
-          maxRows={2}
+          maxRows={4}
           disabled={isOn}
+          
         />
         <TextField
           label="текст"
@@ -217,8 +235,9 @@ export const Command: React.FC<Props> = ({
           value={command.text}
           size="small"
           multiline
-          maxRows={2}
+          maxRows={4}
           disabled={isOn}
+          InputLabelProps={{ shrink: command.text ? true : false }}
         />
       </S.ValuesWrapper>
       <IconButton
