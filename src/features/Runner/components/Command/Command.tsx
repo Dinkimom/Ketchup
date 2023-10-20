@@ -200,7 +200,7 @@ export const Command: React.FC<Props> = ({
         )}
       </S.StatusWrapper>
       <S.ValuesWrapper>
-        <FormControl fullWidth size="small" disabled={isOn}>
+        {/* <FormControl fullWidth size="small" disabled={isOn}>
           <InputLabel shrink>команда</InputLabel>
           <Select
             value={command.name}
@@ -212,7 +212,19 @@ export const Command: React.FC<Props> = ({
               <MenuItem value={option}>{option}</MenuItem>
             ))}
           </Select>
-        </FormControl>
+        </FormControl> */}
+        <TextField
+          label="команда"
+          name="name"
+          onChange={(evt) =>
+            onCommandUpdate(command.id, "name", evt.target.value)
+          }
+          value={command.name}
+          size="small"
+          maxRows={4}
+          disabled={isOn}
+          
+        />
         <TextField
           label="селектор"
           name="selector"
