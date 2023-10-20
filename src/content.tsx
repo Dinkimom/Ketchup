@@ -27,63 +27,65 @@ function IndexContent() {
   }
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <CacheProvider value={muiCache}>
-        <Card
-          style={{
-            width: 450,
-            height: "calc(80vh - 48px)",
-            position: "fixed",
-            top: 24,
-            right: showPopup ? 24 : -500,
-            transition: "all .5s"
-          }}>
-          <Runner />
-        </Card>
-        {!showPopup && (
-          <div
-            data-testid="toggle-button"
-            onClick={handleTogglePopup}
+    <div style={{ position: "relative", zIndex: 1000 }}>
+      <DndProvider backend={HTML5Backend}>
+        <CacheProvider value={muiCache}>
+          <Card
             style={{
-              width: 50,
-              height: 50,
-              borderRadius: 25,
-              background: "red",
+              width: 450,
+              height: "calc(80vh - 48px)",
               position: "fixed",
-              top: 12,
-              right: 12,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 24,
-              cursor: "pointer"
+              top: 24,
+              right: showPopup ? 24 : -500,
+              transition: "all .5s"
             }}>
-            🍅
-          </div>
-        )}
-        {showPopup && (
-          <div
-            data-testid="toggle-button"
-            onClick={handleTogglePopup}
-            style={{
-              width: 50,
-              height: 50,
-              borderRadius: 25,
-              background: "lightgrey",
-              position: "fixed",
-              top: 12,
-              right: 12,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 24,
-              cursor: "pointer"
-            }}>
-            <ClearIcon />
-          </div>
-        )}
-      </CacheProvider>
-    </DndProvider>
+            <Runner />
+          </Card>
+          {!showPopup && (
+            <div
+              data-testid="toggle-button"
+              onClick={handleTogglePopup}
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 25,
+                background: "red",
+                position: "fixed",
+                top: 12,
+                right: 12,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 24,
+                cursor: "pointer"
+              }}>
+              🍅
+            </div>
+          )}
+          {showPopup && (
+            <div
+              data-testid="toggle-button"
+              onClick={handleTogglePopup}
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 25,
+                background: "lightgrey",
+                position: "fixed",
+                top: 12,
+                right: 12,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 24,
+                cursor: "pointer"
+              }}>
+              <ClearIcon />
+            </div>
+          )}
+        </CacheProvider>
+      </DndProvider>
+    </div>
   )
 }
 

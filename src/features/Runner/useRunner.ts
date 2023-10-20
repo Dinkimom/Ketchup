@@ -125,23 +125,25 @@ export const useRunner = () => {
     }
   }
 
-  const handleElementClick = (event: MouseEvent) => {
+  const handleElementClick = async (event: MouseEvent) => {
     if (!aimingCommand) {
       return
     }
 
-    event.preventDefault()
-    event.stopPropagation()
+    setAimingCommand(undefined)
+
+    await InteractionService.delay(0) // Делает расчет элемента после перерисовки
+
+    const clickedElement = document.elementFromPoint(event.x, event.y)
 
     const commandToChange = commands.find(
       (command) => command.id === aimingCommand
     )
-    const { selector, text } = getElementInfo(event.target as HTMLElement)
+    const { selector, text } = getElementInfo(clickedElement as HTMLElement)
     commandToChange.selector = selector
     commandToChange.text = text
 
     setCommands([...commands])
-    setAimingCommand(undefined)
   }
 
   const handleShowElement = async (selector: string, text?: string) => {

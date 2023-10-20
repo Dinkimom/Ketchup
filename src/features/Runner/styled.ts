@@ -27,3 +27,14 @@ export const CommandsWrapper = styled("div")`
   user-select: none;
   border: 1px solid ${grey[300]};
 `
+
+export const Shimmer = styled("div")`
+  width: 100vw;
+  height: 100vh;
+  cursor: crosshair;
+  opacity: 0.8;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+`
