@@ -14,14 +14,15 @@ import {
 } from "@mui/material"
 import { blue } from "@mui/material/colors"
 import type { Identifier, XYCoord } from "dnd-core"
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { useDrag, useDrop } from "react-dnd"
 
 import { CommandName, type Command as CommandType } from "../../types"
 import * as S from "./styled"
 
-const NOT_RUNNABLE_COMMANDS = [CommandName.whileVisible, CommandName.end]
-const NOT_VISIBLE_COMMANDS = [CommandName.end]
+const CYCLE_COMMANDS = [CommandName.whileVisible, CommandName.end]
+const NOT_RUNNABLE_COMMANDS = [CommandName.whileVisible, CommandName.end, CommandName.delay]
+const NOT_VISIBLE_COMMANDS = [CommandName.end, CommandName.delay]
 const COMMAND_NAME_OPTIONS = [
   CommandName.click,
   CommandName.waitFor,
@@ -133,6 +134,12 @@ export const Command: React.FC<Props> = ({
     }
   })
 
+  useEffect(() => {
+    if (isRunning && ref.current) {
+      ref.current.scrollIntoView({ behavior: "smooth", block: "center" })
+    }
+  }, [isRunning, ref])
+
   const [{ isDragging }, drag] = useDrag({
     type: "card",
     item: () => {
@@ -154,7 +161,7 @@ export const Command: React.FC<Props> = ({
       style={{
         opacity,
         backgroundColor:
-          isInCycle || NOT_RUNNABLE_COMMANDS.includes(command.name)
+          isInCycle || CYCLE_COMMANDS.includes(command.name)
             ? blue[100]
             : undefined
       }}
@@ -223,7 +230,6 @@ export const Command: React.FC<Props> = ({
           size="small"
           maxRows={4}
           disabled={isOn}
-          
         />
         <TextField
           label="селектор"
@@ -236,7 +242,6 @@ export const Command: React.FC<Props> = ({
           multiline
           maxRows={4}
           disabled={isOn}
-          
         />
         <TextField
           label="текст"
