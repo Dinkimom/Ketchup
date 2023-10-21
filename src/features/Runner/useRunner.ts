@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react"
 
-import "url-change-event"
-
 import { InteractionService, useStorageServiceState } from "../../services"
 import { CommandName, type Command } from "./types"
-import { generateId, getElementInfo } from "./utils"
+import { generateId, getElementInfoByCoordinates } from "./utils"
 
 export const useRunner = () => {
   const [on, setOn] = useStorageServiceState("on")
@@ -134,12 +132,10 @@ export const useRunner = () => {
 
     await InteractionService.delay(0) // Делает расчет элемента после перерисовки
 
-    const clickedElement = document.elementFromPoint(event.x, event.y)
-
     const commandToChange = commands.find(
       (command) => command.id === aimingCommand
     )
-    const { selector, text } = getElementInfo(clickedElement as HTMLElement)
+    const { selector, text } = getElementInfoByCoordinates(event.x, event.y)
     commandToChange.selector = selector
     commandToChange.text = text
 

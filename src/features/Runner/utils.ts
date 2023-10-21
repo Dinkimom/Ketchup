@@ -27,12 +27,36 @@ export const getIsInCycle = (commands: Command[], command: Command) => {
   return cycleStartIndex !== -1 && cycleEndIndex !== -1 && isIntersection
 }
 
-export const getElementInfo = (element: HTMLElement) => {
-  const classList = [...element.classList]
-  const className = classList.length ? `.${classList.join(".")}` : ""
+export const getElementInfo = (element?: HTMLElement) => {
+  if (!element) {
+    return {
+      selector: "",
+      text: ""
+    }
+  }
+
+  const attributes = element
+    .getAttributeNames()
+    .map((attribute) => `[${attribute}="${element.getAttribute(attribute)}"]`)
+    .join("")
 
   return {
-    selector: `${element.tagName}${className}`,
+    selector: `${element.tagName}${attributes}`,
     text: element.textContent
+  }
+}
+
+export const getElementInfoByCoordinates = (x: number, y: number) => {
+  const clickedElement = document.elementFromPoint(x, y)
+  const clickedElementParent = clickedElement.parentElement
+
+  const { selector, text } = getElementInfo(clickedElement as HTMLElement)
+  const { selector: parentSelector } = getElementInfo(
+    clickedElementParent as HTMLElement
+  )
+
+  return {
+    selector: `${parentSelector ? parentSelector : ""} ${selector}`,
+    text
   }
 }
