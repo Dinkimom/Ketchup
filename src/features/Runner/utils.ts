@@ -28,6 +28,8 @@ export const getIsInCycle = (commands: Command[], command: Command) => {
 }
 
 export const getElementInfo = (element?: HTMLElement) => {
+  const SELECTED_ATTRIBUTES = ["id", "class", "style", "type"]
+
   if (!element) {
     return {
       selector: "",
@@ -37,6 +39,7 @@ export const getElementInfo = (element?: HTMLElement) => {
 
   const attributes = element
     .getAttributeNames()
+    .filter((attribute) => SELECTED_ATTRIBUTES.includes(attribute))
     .map((attribute) => `[${attribute}="${element.getAttribute(attribute)}"]`)
     .join("")
 
