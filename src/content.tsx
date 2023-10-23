@@ -30,17 +30,20 @@ function IndexContent() {
     <div style={{ position: "relative", zIndex: 1000 }}>
       <DndProvider backend={HTML5Backend}>
         <CacheProvider value={muiCache}>
-          <Card
-            style={{
-              width: 450,
-              height: "calc(80vh - 48px)",
-              position: "fixed",
-              top: 24,
-              right: showPopup ? 24 : -500,
-              transition: "all .5s"
-            }}>
-            <Runner />
-          </Card>
+          {showPopup && (
+            <Card
+              style={{
+                width: 450,
+                height: "calc(80vh - 48px)",
+                position: "fixed",
+                top: 24,
+                right: 24,
+                // right: showPopup ? 24 : -500,
+                // transition: "all .5s"
+              }}>
+              <Runner />
+            </Card>
+          )}
           {!showPopup && (
             <div
               data-testid="toggle-button"
