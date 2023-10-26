@@ -13,6 +13,7 @@ export const CommandWrapper = styled("div")`
   position: relative;
   cursor: grab;
   width: 100%;
+  box-sizing: border-box;
 `
 
 export const ValuesWrapper = styled("div")`
