@@ -21,7 +21,11 @@ import { CommandName, type Command as CommandType } from "../../types"
 import * as S from "./styled"
 
 const CYCLE_COMMANDS = [CommandName.whileVisible, CommandName.end]
-const NOT_RUNNABLE_COMMANDS = [CommandName.whileVisible, CommandName.end, CommandName.delay]
+const NOT_RUNNABLE_COMMANDS = [
+  CommandName.whileVisible,
+  CommandName.end,
+  CommandName.delay
+]
 const NOT_VISIBLE_COMMANDS = [CommandName.end, CommandName.delay]
 const COMMAND_NAME_OPTIONS = [
   CommandName.click,
@@ -51,7 +55,6 @@ interface Props {
   onCommandUpdate: (id: string, field: string, value: string) => void
   onCommandRemove: (id: string) => void
   onCommandMove: (from: number, to: number) => void
-  onCommandRun: (index: number) => void
 }
 
 export const Command: React.FC<Props> = ({
@@ -66,8 +69,7 @@ export const Command: React.FC<Props> = ({
   onShowElement,
   onCommandUpdate,
   onCommandRemove,
-  onCommandMove,
-  onCommandRun
+  onCommandMove
 }) => {
   const canRunCommand = !NOT_RUNNABLE_COMMANDS.includes(command.name)
   const canShowElement = !NOT_VISIBLE_COMMANDS.includes(command.name)
@@ -177,14 +179,6 @@ export const Command: React.FC<Props> = ({
             data-testid="command-complete-status"
             sx={{ fontSize: 20 }}
           />
-        )}
-        {!isOn && canRunCommand && (
-          <IconButton
-            size="small"
-            onClick={() => onCommandRun(index)}
-            data-testid="run-command">
-            <PlayArrowIcon />
-          </IconButton>
         )}
         {!isOn && canShowElement && (
           <IconButton

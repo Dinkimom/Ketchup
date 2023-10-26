@@ -38,3 +38,7 @@ export const Shimmer = styled("div")`
   left: 0;
   z-index: 1000;
 `
+
+export const Counter = styled("b")`
+  margin-left: 4px;
+`

@@ -11,15 +11,7 @@ import { getIsInCycle } from "./utils"
 
 export const Runner: React.FC = () => {
   const {
-    data: {
-      on,
-      commands,
-      runnerCommands,
-      cycled,
-      allTimeCount,
-      commandTestingMode,
-      aimingCommand
-    },
+    data: { on, commands, runnerCommands, cycled, allTimeCount, aimingCommand },
     handlers: {
       handleToggleOn,
       handleToggleCycled,
@@ -28,7 +20,6 @@ export const Runner: React.FC = () => {
       handleAddCommand,
       handleShowElement,
       handleCommandMove,
-      handleCommandRun,
       handleElementAim
     }
   } = useRunner()
@@ -39,9 +30,7 @@ export const Runner: React.FC = () => {
       <S.Wrapper data-testid="content">
         <Typography>
           Всего подтверждений:{" "}
-          <b style={{ marginLeft: 4 }} data-testid="counter">
-            {allTimeCount}
-          </b>
+          <S.Counter data-testid="counter">{allTimeCount}</S.Counter>
         </Typography>
         <Controls
           isOn={on}
@@ -60,7 +49,6 @@ export const Runner: React.FC = () => {
               isAiming={aimingCommand === command.id}
               isRunning={on && runnerCommands[0]?.id === command.id}
               isComplete={
-                !commandTestingMode &&
                 on &&
                 !runnerCommands.find(
                   (runnerCommand) => runnerCommand.id === command.id
@@ -70,7 +58,6 @@ export const Runner: React.FC = () => {
               onCommandUpdate={handleCommandUpdate}
               onCommandRemove={handleRemoveCommand}
               onCommandMove={handleCommandMove}
-              onCommandRun={handleCommandRun}
               onElementAim={handleElementAim}
             />
           ))}

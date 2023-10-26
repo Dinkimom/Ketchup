@@ -11,7 +11,6 @@ export const useRunner = () => {
   const [runnerCommands, setRunnerCommands] =
     useStorageServiceState("runnerCommands")
   const [commands, setCommands] = useStorageServiceState("commands")
-  const [commandTestingMode, setCommandTestingMode] = useState(false)
   const [aimingCommand, setAimingCommand] = useState<undefined | string>(
     undefined
   )
@@ -61,12 +60,6 @@ export const useRunner = () => {
 
   const handleElementAim = (id: string) => {
     setAimingCommand(id)
-  }
-
-  const handleCommandRun = (index: number) => {
-    setCommandTestingMode(true)
-    setRunnerCommands([commands[index]])
-    setOn(true)
   }
 
   const runCommand = async (commandToRun: Command) => {
@@ -159,7 +152,6 @@ export const useRunner = () => {
       runCommand(runnerCommands[0])
     } else {
       setOn(false)
-      setCommandTestingMode(false)
     }
 
     if (on && runnerCommands.length === 0) {
@@ -182,7 +174,6 @@ export const useRunner = () => {
       runnerCommands,
       cycled,
       allTimeCount,
-      commandTestingMode,
       aimingCommand
     },
     handlers: {
@@ -193,7 +184,6 @@ export const useRunner = () => {
       handleAddCommand,
       handleShowElement,
       handleCommandMove,
-      handleCommandRun,
       handleElementAim
     }
   }
