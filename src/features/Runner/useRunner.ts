@@ -79,7 +79,13 @@ export const useRunner = () => {
         if (elementToCheck) {
           setRunnerCommands([...runnerCommands.slice(1)])
         } else {
-          setRunnerCommands([...commands.slice(cycleEndIndex + 1)])
+          const commandsToRun = [...commands.slice(cycleEndIndex + 1)]
+
+          if (commandsToRun.length === 0) {
+            setAllTimeCount(allTimeCount + 1)
+          }
+
+          setRunnerCommands(commandsToRun)
         }
         return
       }
@@ -105,6 +111,10 @@ export const useRunner = () => {
 
         setRunnerCommands((runnerCommands) => {
           runnerCommands.shift()
+
+          if (runnerCommands.length === 0) {
+            setAllTimeCount(allTimeCount + 1)
+          }
 
           if (cycled && runnerCommands?.length === 0) {
             return [...commands]
@@ -152,10 +162,6 @@ export const useRunner = () => {
       runCommand(runnerCommands[0])
     } else {
       setOn(false)
-    }
-
-    if (on && runnerCommands.length === 0) {
-      setAllTimeCount(allTimeCount + 1)
     }
   }, [runnerCommands])
 
