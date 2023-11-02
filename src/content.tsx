@@ -1,6 +1,6 @@
 import createCache from "@emotion/cache"
 import { CacheProvider } from "@emotion/react"
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ClearIcon from "@mui/icons-material/Clear"
 import SettingsIcon from "@mui/icons-material/Settings"
 import { Card, IconButton } from "@mui/material"
@@ -39,7 +39,7 @@ function IndexContent() {
 
   const renderNavigationIcon = () => {
     if (currentPage === "settings") {
-      return <ArrowBackIosIcon />
+      return <ArrowBackIosNewIcon />
     }
 
     return <SettingsIcon />
