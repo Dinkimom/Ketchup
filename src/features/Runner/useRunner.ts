@@ -7,7 +7,9 @@ import { generateId, getElementInfoByCoordinates } from "./utils"
 export const useRunner = () => {
   const [on, setOn] = useStorageServiceState("on")
   const [cycled, setCycled] = useStorageServiceState("cycled")
-  const [allTimeCount, setAllTimeCount] = useStorageServiceState("allTimeCount")
+  const [packageCount, setPackageCount] = useStorageServiceState("packageCount")
+  const [notificationCount, setNotificationCount] =
+    useStorageServiceState("notificationCount")
   const [runnerCommands, setRunnerCommands] =
     useStorageServiceState("runnerCommands")
   const [commands, setCommands] = useStorageServiceState("commands")
@@ -38,13 +40,13 @@ export const useRunner = () => {
   const handleCommandUpdate = (
     id: string,
     field: keyof Command,
-    value: string
+    value: never
   ) => {
     const commandToUpdate: Command = commands.find(
       (command) => command.id === id
     )
 
-    commandToUpdate[field] = value as CommandName
+    commandToUpdate[field] = value
     setCommands([...commands])
   }
 
@@ -82,7 +84,7 @@ export const useRunner = () => {
           const commandsToRun = [...commands.slice(cycleEndIndex + 1)]
 
           if (commandsToRun.length === 0) {
-            setAllTimeCount(allTimeCount + 1)
+            setPackageCount(packageCount + 1)
           }
 
           setRunnerCommands(commandsToRun)
@@ -109,11 +111,15 @@ export const useRunner = () => {
           commandToRun.text
         )
 
+        if (commandToRun.incrementNotification) {
+          setNotificationCount(notificationCount + 1)
+        }
+
         setRunnerCommands((runnerCommands) => {
           runnerCommands.shift()
 
           if (runnerCommands.length === 0) {
-            setAllTimeCount(allTimeCount + 1)
+            setPackageCount(packageCount + 1)
           }
 
           if (cycled && runnerCommands?.length === 0) {
@@ -157,6 +163,11 @@ export const useRunner = () => {
     }
   }
 
+  const handleCounterReset = () => {
+    setNotificationCount(0)
+    setPackageCount(0)
+  }
+
   useEffect(() => {
     if (on && runnerCommands.length > 0) {
       runCommand(runnerCommands[0])
@@ -179,7 +190,8 @@ export const useRunner = () => {
       commands,
       runnerCommands,
       cycled,
-      allTimeCount,
+      packageCount,
+      notificationCount,
       aimingCommand
     },
     handlers: {
@@ -190,7 +202,8 @@ export const useRunner = () => {
       handleAddCommand,
       handleShowElement,
       handleCommandMove,
-      handleElementAim
+      handleElementAim,
+      handleCounterReset
     }
   }
 }

@@ -11,6 +11,12 @@ export const Wrapper = styled("div")`
   user-select: none;
 `
 
+export const CounterWrapper = styled("div")`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`
+
 export const CommandsWrapper = styled("div")`
   display: flex;
   flex-direction: column;
@@ -18,8 +24,8 @@ export const CommandsWrapper = styled("div")`
   align-items: center;
   width: 100%;
   overflow-y: scroll;
-  min-height: calc(80vh - 290px);
-  max-height: calc(80vh - 290px);
+  min-height: calc(80vh - 300px);
+  max-height: calc(80vh - 300px);
   background: ${grey[100]};
   padding: 16px;
   box-sizing: border-box;

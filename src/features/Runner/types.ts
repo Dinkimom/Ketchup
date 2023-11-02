@@ -3,6 +3,7 @@ export type Command = {
   name: CommandName
   selector: string
   text?: string
+  incrementNotification?: boolean
 }
 
 export enum CommandName {

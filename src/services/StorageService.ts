@@ -17,7 +17,8 @@ export const StorageService = {
 }
 
 const DEFAULT_VALUES: { [key in FieldName]: unknown } = {
-  allTimeCount: 0,
+  packageCount: 0,
+  notificationCount: 0,
   commands: [],
   popupOpened: false,
   runnerCommands: [],

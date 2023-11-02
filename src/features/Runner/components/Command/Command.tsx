@@ -1,18 +1,21 @@
 import CenterFocusStrongIcon from "@mui/icons-material/CenterFocusStrong"
 import ClearIcon from "@mui/icons-material/Clear"
 import DoneIcon from "@mui/icons-material/Done"
+import NotificationsIcon from "@mui/icons-material/Notifications"
 import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import {
+  Checkbox,
   CircularProgress,
   FormControl,
   IconButton,
   InputLabel,
   MenuItem,
   Select,
-  TextField
+  TextField,
+  Tooltip
 } from "@mui/material"
-import { blue } from "@mui/material/colors"
+import { blue, purple } from "@mui/material/colors"
 import type { Identifier, XYCoord } from "dnd-core"
 import React, { useEffect, useRef } from "react"
 import { useDrag, useDrop } from "react-dnd"
@@ -21,11 +24,6 @@ import { CommandName, type Command as CommandType } from "../../types"
 import * as S from "./styled"
 
 const CYCLE_COMMANDS = [CommandName.whileVisible, CommandName.end]
-const NOT_RUNNABLE_COMMANDS = [
-  CommandName.whileVisible,
-  CommandName.end,
-  CommandName.delay
-]
 const NOT_VISIBLE_COMMANDS = [CommandName.end, CommandName.delay]
 const COMMAND_NAME_OPTIONS = [
   CommandName.click,
@@ -35,6 +33,7 @@ const COMMAND_NAME_OPTIONS = [
   CommandName.end,
   CommandName.find
 ]
+const CAN_INCREMENT_NOTIFICATION = [CommandName.click]
 
 interface DragItem {
   index: number
@@ -52,7 +51,7 @@ interface Props {
   isAiming: boolean
   onElementAim: (id: string) => void
   onShowElement: (selector: string, text: string) => void
-  onCommandUpdate: (id: string, field: string, value: string) => void
+  onCommandUpdate: (id: string, field: string, value: string | boolean) => void
   onCommandRemove: (id: string) => void
   onCommandMove: (from: number, to: number) => void
 }
@@ -71,8 +70,10 @@ export const Command: React.FC<Props> = ({
   onCommandRemove,
   onCommandMove
 }) => {
-  const canRunCommand = !NOT_RUNNABLE_COMMANDS.includes(command.name)
   const canShowElement = !NOT_VISIBLE_COMMANDS.includes(command.name)
+  const canIncrementNotification = CAN_INCREMENT_NOTIFICATION.includes(
+    command.name
+  )
 
   const ref = useRef<HTMLDivElement>(null)
   const [{ handlerId }, drop] = useDrop<
@@ -156,16 +157,25 @@ export const Command: React.FC<Props> = ({
   const opacity = isDragging ? 0 : 1
   drag(drop(ref))
 
+  const getBackgroundColor = () => {
+    if (command.incrementNotification) {
+      return purple[100]
+    }
+
+    if (isInCycle || CYCLE_COMMANDS.includes(command.name)) {
+      return blue[100]
+    }
+
+    return undefined
+  }
+
   return (
     <S.CommandWrapper
       data-testid="command"
       key={command.id}
       style={{
         opacity,
-        backgroundColor:
-          isInCycle || CYCLE_COMMANDS.includes(command.name)
-            ? blue[100]
-            : undefined
+        backgroundColor: getBackgroundColor()
       }}
       ref={ref}
       data-handler-id={handlerId}>
@@ -197,6 +207,19 @@ export const Command: React.FC<Props> = ({
             size="small"
             data-testid="show-command">
             <VisibilityIcon />
+          </IconButton>
+        )}
+        {!isOn && canIncrementNotification && (
+          <IconButton
+            color={command.incrementNotification ? "primary" : undefined}
+            onClick={() =>
+              onCommandUpdate(
+                command.id,
+                "incrementNotification",
+                !command.incrementNotification
+              )
+            }>
+            <NotificationsIcon />
           </IconButton>
         )}
       </S.StatusWrapper>

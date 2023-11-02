@@ -1,4 +1,5 @@
 import AddCircleIcon from "@mui/icons-material/AddCircle"
+import AutorenewIcon from "@mui/icons-material/Autorenew"
 import { IconButton, Typography } from "@mui/material"
 import React from "react"
 
@@ -11,7 +12,15 @@ import { getIsInCycle } from "./utils"
 
 export const Runner: React.FC = () => {
   const {
-    data: { on, commands, runnerCommands, cycled, allTimeCount, aimingCommand },
+    data: {
+      on,
+      commands,
+      runnerCommands,
+      cycled,
+      packageCount,
+      notificationCount,
+      aimingCommand
+    },
     handlers: {
       handleToggleOn,
       handleToggleCycled,
@@ -20,7 +29,8 @@ export const Runner: React.FC = () => {
       handleAddCommand,
       handleShowElement,
       handleCommandMove,
-      handleElementAim
+      handleElementAim,
+      handleCounterReset
     }
   } = useRunner()
 
@@ -28,10 +38,18 @@ export const Runner: React.FC = () => {
     <>
       {aimingCommand && <S.Shimmer />}
       <S.Wrapper data-testid="content">
-        <Typography>
-          Всего подтверждений:{" "}
-          <S.Counter data-testid="counter">{allTimeCount}</S.Counter>
-        </Typography>
+        <S.CounterWrapper>
+          <Typography>
+            Пакетов: <S.Counter data-testid="counter">{packageCount}</S.Counter>
+          </Typography>
+          <Typography>
+            Уведомлений:
+            <S.Counter data-testid="counter">{notificationCount}</S.Counter>
+          </Typography>
+          <IconButton onClick={handleCounterReset}>
+            <AutorenewIcon sx={{ width: 20, height: 20 }} />
+          </IconButton>
+        </S.CounterWrapper>
         <Controls
           isOn={on}
           isCycled={cycled}

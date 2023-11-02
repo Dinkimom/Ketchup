@@ -1,5 +1,6 @@
 type FieldName =
-  | "allTimeCount"
+  | "packageCount"
+  | "notificationCount"
   | "commands"
   | "popupOpened"
   | "runnerCommands"
@@ -8,7 +9,8 @@ type FieldName =
   | "available"
 
 const FIELD_NAMES: FieldName[] = [
-  "allTimeCount",
+  "packageCount",
+  "notificationCount",
   "commands",
   "popupOpened",
   "runnerCommands",
