@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react"
 
-import { InteractionService, useStorageServiceState } from "../../services"
+import {
+  InteractionService,
+  NotificationService,
+  useStorageServiceState
+} from "../../services"
 import { CommandName, type Command } from "./types"
 import { generateId, getElementInfoByCoordinates } from "./utils"
 
 export const useRunner = () => {
   const [on, setOn] = useStorageServiceState("on")
-  const [cycled, setCycled] = useStorageServiceState("cycled")
+  const [cycled] = useStorageServiceState("cycled")
   const [packageCount, setPackageCount] = useStorageServiceState("packageCount")
   const [notificationCount, setNotificationCount] =
     useStorageServiceState("notificationCount")
@@ -16,14 +20,12 @@ export const useRunner = () => {
   const [aimingCommand, setAimingCommand] = useState<undefined | string>(
     undefined
   )
+  const [botToken] = useStorageServiceState("botToken")
+  const [chatId] = useStorageServiceState("chatId")
 
   const handleToggleOn = () => {
     setRunnerCommands(on ? [] : [...commands])
     setOn(!on)
-  }
-
-  const handleToggleCycled = () => {
-    setCycled(!cycled)
   }
 
   const handleAddCommand = () => {
@@ -65,6 +67,16 @@ export const useRunner = () => {
   }
 
   const runCommand = async (commandToRun: Command) => {
+    const timeoutId = setTimeout(() => {
+      if (commandToRun !== commands[0]) {
+        NotificationService.sendMessage({
+          botToken,
+          chatId,
+          message: "Hello world"
+        })
+      }
+    }, 3 * 1000)
+
     switch (commandToRun.name) {
       case CommandName.whileVisible: {
         const elementToCheck = await InteractionService.find(
@@ -89,6 +101,7 @@ export const useRunner = () => {
 
           setRunnerCommands(commandsToRun)
         }
+        clearTimeout(timeoutId)
         return
       }
       case CommandName.end: {
@@ -103,6 +116,7 @@ export const useRunner = () => {
           ...commands.slice(cycleStartIndex, cycleEndIndex + 1),
           ...runnerCommands
         ])
+        clearTimeout(timeoutId)
         return
       }
       default: {
@@ -117,6 +131,7 @@ export const useRunner = () => {
 
         setRunnerCommands((runnerCommands) => {
           runnerCommands.shift()
+          clearTimeout(timeoutId)
 
           if (runnerCommands.length === 0) {
             setPackageCount(packageCount + 1)
@@ -177,6 +192,11 @@ export const useRunner = () => {
   }, [runnerCommands])
 
   useEffect(() => {
+    if (runnerCommands.length !== commands) {
+    }
+  }, [runnerCommands])
+
+  useEffect(() => {
     document.addEventListener("click", handleElementClick)
 
     return () => {
@@ -196,7 +216,6 @@ export const useRunner = () => {
     },
     handlers: {
       handleToggleOn,
-      handleToggleCycled,
       handleCommandUpdate,
       handleRemoveCommand,
       handleAddCommand,

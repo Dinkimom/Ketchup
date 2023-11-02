@@ -24,8 +24,8 @@ export const CommandsWrapper = styled("div")`
   align-items: center;
   width: 100%;
   overflow-y: scroll;
-  min-height: calc(80vh - 300px);
-  max-height: calc(80vh - 300px);
+  min-height: calc(80vh - 250px);
+  max-height: calc(80vh - 250px);
   background: ${grey[100]};
   padding: 16px;
   box-sizing: border-box;

@@ -1,16 +1,22 @@
 import createCache from "@emotion/cache"
 import { CacheProvider } from "@emotion/react"
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
 import ClearIcon from "@mui/icons-material/Clear"
-import { Card } from "@mui/material"
+import SettingsIcon from "@mui/icons-material/Settings"
+import { Card, IconButton } from "@mui/material"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 
 import { Runner } from "./features/Runner"
+import { VersionBadge } from "./features/Runner/components/VersionBadge"
+import { Settings } from "./features/Settings"
 import { useStorageServiceState } from "./services"
 
 function IndexContent() {
   const [showPopup, setShowPopup] = useStorageServiceState("popupOpened")
   const [available] = useStorageServiceState("available")
+  const [currentPage, setCurrentPage] = useStorageServiceState("currentPage")
+  const [on] = useStorageServiceState("on")
   const root = document.querySelector("plasmo-csui")?.shadowRoot
   const muiCache = createCache({
     key: "mui",
@@ -20,6 +26,32 @@ function IndexContent() {
 
   const handleTogglePopup = () => {
     setShowPopup(!showPopup)
+  }
+
+  const handleNavigationClick = () => {
+    if (currentPage === "settings") {
+      setCurrentPage("main")
+      return
+    }
+
+    setCurrentPage("settings")
+  }
+
+  const renderNavigationIcon = () => {
+    if (currentPage === "settings") {
+      return <ArrowBackIosIcon />
+    }
+
+    return <SettingsIcon />
+  }
+
+  const renderInner = () => {
+    switch (currentPage) {
+      case "settings":
+        return <Settings />
+      default:
+        return <Runner />
+    }
   }
 
   if (!available) {
@@ -39,7 +71,21 @@ function IndexContent() {
               right: showPopup ? 24 : -500,
               transition: "all .5s"
             }}>
-            <Runner />
+            {!on && (
+              <IconButton
+                style={{ position: "absolute", top: 12, left: 8 }}
+                onClick={handleNavigationClick}>
+                {renderNavigationIcon()}
+              </IconButton>
+            )}
+            {renderInner()}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center"
+              }}>
+              <VersionBadge />
+            </div>
           </Card>
           <div
             data-testid="toggle-button"

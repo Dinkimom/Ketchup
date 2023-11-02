@@ -16,14 +16,12 @@ export const Runner: React.FC = () => {
       on,
       commands,
       runnerCommands,
-      cycled,
       packageCount,
       notificationCount,
       aimingCommand
     },
     handlers: {
       handleToggleOn,
-      handleToggleCycled,
       handleCommandUpdate,
       handleRemoveCommand,
       handleAddCommand,
@@ -50,12 +48,7 @@ export const Runner: React.FC = () => {
             <AutorenewIcon sx={{ width: 20, height: 20 }} />
           </IconButton>
         </S.CounterWrapper>
-        <Controls
-          isOn={on}
-          isCycled={cycled}
-          onToggleOn={handleToggleOn}
-          onToggleCycled={handleToggleCycled}
-        />
+        <Controls isOn={on} onToggleOn={handleToggleOn} />
         <S.CommandsWrapper>
           {commands.map((command, index) => (
             <Command
@@ -88,7 +81,6 @@ export const Runner: React.FC = () => {
             </IconButton>
           )}
         </S.CommandsWrapper>
-        <VersionBadge />
       </S.Wrapper>
     </>
   )

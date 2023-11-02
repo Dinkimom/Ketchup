@@ -70,6 +70,8 @@ export const Command: React.FC<Props> = ({
   onCommandRemove,
   onCommandMove
 }) => {
+  console.log(process.env.PLASMO_PUBLIC_BOT_TOKEN)
+
   const canShowElement = !NOT_VISIBLE_COMMANDS.includes(command.name)
   const canIncrementNotification = CAN_INCREMENT_NOTIFICATION.includes(
     command.name

@@ -7,6 +7,9 @@ type FieldName =
   | "cycled"
   | "on"
   | "available"
+  | "chatId"
+  | "botToken"
+  | "currentPage"
 
 const FIELD_NAMES: FieldName[] = [
   "packageCount",
@@ -15,5 +18,8 @@ const FIELD_NAMES: FieldName[] = [
   "popupOpened",
   "runnerCommands",
   "cycled",
-  "on"
+  "on",
+  "chatId",
+  "botToken",
+  "currentPage"
 ]
