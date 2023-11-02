@@ -4,7 +4,13 @@ export const StorageService = {
   },
   getField(name: FieldName) {
     try {
-      const value = JSON.parse(localStorage.getItem(name) as any)
+      const stringifiedValue = localStorage.getItem(name)
+
+      if (!stringifiedValue) {
+        throw new Error()
+      }
+
+      const value = JSON.parse(stringifiedValue as any)
 
       return value
     } catch {
