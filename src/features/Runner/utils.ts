@@ -63,3 +63,18 @@ export const getElementInfoByCoordinates = (x: number, y: number) => {
     text
   }
 }
+
+export const getNotificationMessage = (command: Command) => {
+  let message
+
+  switch (command.name) {
+    case CommandName.click:
+      message = `*ВНИМАНИЕ!*\nKetchup 🍅 завис на команде 🎯*Клик по элементу* с текстом *"${command.text}"*`
+      break
+    case CommandName.find:
+      message = `*ВНИМАНИЕ!*\nKetchup 🍅 завис на команде 🔍*Поиск элемента* с текстом *"${command.text}"*`
+      break
+  }
+
+  return encodeURIComponent(message)
+}

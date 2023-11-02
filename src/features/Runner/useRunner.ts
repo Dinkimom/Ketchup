@@ -6,7 +6,11 @@ import {
   useStorageServiceState
 } from "../../services"
 import { CommandName, type Command } from "./types"
-import { generateId, getElementInfoByCoordinates } from "./utils"
+import {
+  generateId,
+  getElementInfoByCoordinates,
+  getNotificationMessage
+} from "./utils"
 
 export const useRunner = () => {
   const [on, setOn] = useStorageServiceState("on")
@@ -68,11 +72,11 @@ export const useRunner = () => {
 
   const runCommand = async (commandToRun: Command) => {
     const timeoutId = setTimeout(() => {
-      if (commandToRun !== commands[0]) {
+      if (commandToRun.notifyOnTimeout) {
         NotificationService.sendMessage({
           botToken,
           chatId,
-          message: "Hello world"
+          message: getNotificationMessage(commandToRun)
         })
       }
     }, 3 * 1000)

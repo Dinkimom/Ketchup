@@ -4,6 +4,7 @@ export type Command = {
   selector: string
   text?: string
   incrementNotification?: boolean
+  notifyOnTimeout?: boolean
 }
 
 export enum CommandName {

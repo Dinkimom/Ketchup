@@ -2,20 +2,10 @@ import CenterFocusStrongIcon from "@mui/icons-material/CenterFocusStrong"
 import ClearIcon from "@mui/icons-material/Clear"
 import DoneIcon from "@mui/icons-material/Done"
 import NotificationsIcon from "@mui/icons-material/Notifications"
-import PlayArrowIcon from "@mui/icons-material/PlayArrow"
+import PlusOneIcon from "@mui/icons-material/PlusOne"
 import VisibilityIcon from "@mui/icons-material/Visibility"
-import {
-  Checkbox,
-  CircularProgress,
-  FormControl,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Tooltip
-} from "@mui/material"
-import { blue, purple } from "@mui/material/colors"
+import { CircularProgress, IconButton, TextField } from "@mui/material"
+import { blue } from "@mui/material/colors"
 import type { Identifier, XYCoord } from "dnd-core"
 import React, { useEffect, useRef } from "react"
 import { useDrag, useDrop } from "react-dnd"
@@ -34,6 +24,7 @@ const COMMAND_NAME_OPTIONS = [
   CommandName.find
 ]
 const CAN_INCREMENT_NOTIFICATION = [CommandName.click]
+const CAN_NOTIFY = [CommandName.click, CommandName.find]
 
 interface DragItem {
   index: number
@@ -70,9 +61,8 @@ export const Command: React.FC<Props> = ({
   onCommandRemove,
   onCommandMove
 }) => {
-  console.log(process.env.PLASMO_PUBLIC_BOT_TOKEN)
-
   const canShowElement = !NOT_VISIBLE_COMMANDS.includes(command.name)
+  const canNotify = CAN_NOTIFY.includes(command.name)
   const canIncrementNotification = CAN_INCREMENT_NOTIFICATION.includes(
     command.name
   )
@@ -160,10 +150,6 @@ export const Command: React.FC<Props> = ({
   drag(drop(ref))
 
   const getBackgroundColor = () => {
-    if (command.incrementNotification) {
-      return purple[100]
-    }
-
     if (isInCycle || CYCLE_COMMANDS.includes(command.name)) {
       return blue[100]
     }
@@ -219,6 +205,19 @@ export const Command: React.FC<Props> = ({
                 command.id,
                 "incrementNotification",
                 !command.incrementNotification
+              )
+            }>
+            <PlusOneIcon />
+          </IconButton>
+        )}
+        {!isOn && canNotify && (
+          <IconButton
+            color={command.notifyOnTimeout ? "primary" : undefined}
+            onClick={() =>
+              onCommandUpdate(
+                command.id,
+                "notifyOnTimeout",
+                !command.notifyOnTimeout
               )
             }>
             <NotificationsIcon />
