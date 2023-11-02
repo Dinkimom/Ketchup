@@ -79,7 +79,7 @@ export const useRunner = () => {
           message: getNotificationMessage(commandToRun)
         })
       }
-    }, 3 * 1000)
+    }, 60 * 1000)
 
     switch (commandToRun.name) {
       case CommandName.whileVisible: {
