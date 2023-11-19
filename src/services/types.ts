@@ -10,6 +10,8 @@ type FieldName =
   | "chatId"
   | "botToken"
   | "currentPage"
+  | "notificationsOn"
+  | "notificationDelay"
 
 const FIELD_NAMES: FieldName[] = [
   "packageCount",
@@ -21,5 +23,7 @@ const FIELD_NAMES: FieldName[] = [
   "on",
   "chatId",
   "botToken",
-  "currentPage"
+  "currentPage",
+  "notificationsOn",
+  "notificationDelay"
 ]

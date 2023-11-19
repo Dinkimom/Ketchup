@@ -8,7 +8,7 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 
 import { Runner } from "./features/Runner"
-import { VersionBadge } from "./features/Runner/components/VersionBadge"
+import { VersionBadge } from "./components/VersionBadge"
 import { Settings } from "./features/Settings"
 import { useStorageServiceState } from "./services"
 

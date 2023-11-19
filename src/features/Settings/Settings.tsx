@@ -1,6 +1,7 @@
 import {
   Checkbox,
   FormControlLabel,
+  InputAdornment,
   TextField,
   Typography
 } from "@mui/material"
@@ -11,8 +12,14 @@ import { useSettings } from "./useSettings"
 
 export const Settings: React.FC = () => {
   const {
-    data: { cycled, chatId, botToken },
-    handlers: { handleChangeBotToken, handleChangeChatId, handleToggleCycled }
+    data: { cycled, chatId, botToken, on, notificationsOn, notificationDelay },
+    handlers: {
+      handleChangeBotToken,
+      handleChangeChatId,
+      handleToggleCycled,
+      handleToggleNotifications,
+      handleChangeNotificationDelay
+    }
   } = useSettings()
 
   return (
@@ -30,6 +37,7 @@ export const Settings: React.FC = () => {
           />
         }
         label="Цикличный запуск"
+        disabled={on}
       />
       <TextField
         label="Telegram Bot Token"
@@ -37,12 +45,37 @@ export const Settings: React.FC = () => {
         value={botToken}
         multiline
         size="small"
+        disabled={on}
       />
       <TextField
         label="Telegram Chat ID"
         onChange={(evt) => handleChangeChatId(evt.target.value)}
         value={chatId}
         size="small"
+        disabled={on}
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            defaultChecked
+            onChange={handleToggleNotifications}
+            checked={notificationsOn}
+            name="notificationsOn"
+          />
+        }
+        label="Включить уведомления"
+        disabled={on}
+      />
+      <TextField
+        label="Отправить уведомление через"
+        onChange={(evt) => handleChangeNotificationDelay(evt.target.value)}
+        value={notificationDelay}
+        size="small"
+        type="number"
+        InputProps={{
+          endAdornment: <InputAdornment position="end">сек</InputAdornment>,
+        }}
+        disabled={on}
       />
     </S.Wrapper>
   )

@@ -33,5 +33,7 @@ const DEFAULT_VALUES: { [key in FieldName]: unknown } = {
   available: false,
   chatId: "",
   currentPage: "",
-  botToken: ""
+  botToken: "",
+  notificationsOn: true,
+  notificationDelay: 60,
 }

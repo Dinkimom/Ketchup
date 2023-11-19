@@ -26,6 +26,8 @@ export const useRunner = () => {
   )
   const [botToken] = useStorageServiceState("botToken")
   const [chatId] = useStorageServiceState("chatId")
+  const [notificationsOn] = useStorageServiceState("notificationsOn")
+  const [notificationDelay] = useStorageServiceState("notificationDelay")
 
   const handleToggleOn = () => {
     setRunnerCommands(on ? [] : [...commands])
@@ -72,14 +74,14 @@ export const useRunner = () => {
 
   const runCommand = async (commandToRun: Command) => {
     const timeoutId = setTimeout(() => {
-      if (commandToRun.notifyOnTimeout) {
+      if (commandToRun.notifyOnTimeout && notificationsOn) {
         NotificationService.sendMessage({
           botToken,
           chatId,
           message: getNotificationMessage(commandToRun)
         })
       }
-    }, 60 * 1000)
+    }, notificationDelay * 1000)
 
     switch (commandToRun.name) {
       case CommandName.whileVisible: {
@@ -129,13 +131,13 @@ export const useRunner = () => {
           commandToRun.text
         )
 
-        if (commandToRun.incrementNotification) {
-          setNotificationCount(notificationCount + 1)
-        }
-
         setRunnerCommands((runnerCommands) => {
           runnerCommands.shift()
           clearTimeout(timeoutId)
+
+          if (commandToRun.incrementNotification) {
+            setNotificationCount(notificationCount + 1)
+          }
 
           if (runnerCommands.length === 0) {
             setPackageCount(packageCount + 1)

@@ -69,12 +69,12 @@ export const getNotificationMessage = (command: Command) => {
 
   switch (command.name) {
     case CommandName.click:
-      message = `*ВНИМАНИЕ!*\nKetchup 🍅 завис на команде 🎯*Клик по элементу* с текстом *"${command.text}"*`
+      message = `*ВНИМАНИЕ!* Ketchup завис на команде *Клик по элементу* с текстом *"${command.text}"*`
       break
     case CommandName.find:
-      message = `*ВНИМАНИЕ!*\nKetchup 🍅 завис на команде 🔍*Поиск элемента* с текстом *"${command.text}"*`
+      message = `*ВНИМАНИЕ!*\n Ketchup завис на команде *Поиск элемента* с текстом *"${command.text}"*`
       break
   }
 
-  return encodeURIComponent(message)
+  return message
 }

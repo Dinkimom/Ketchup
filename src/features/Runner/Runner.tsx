@@ -5,7 +5,7 @@ import React from "react"
 
 import { Command } from "./components/Command"
 import { Controls } from "./components/Controls"
-import { VersionBadge } from "./components/VersionBadge"
+import { VersionBadge } from "../../components/VersionBadge"
 import * as S from "./styled"
 import { useRunner } from "./useRunner"
 import { getIsInCycle } from "./utils"

@@ -22,13 +22,12 @@ const router = createBrowserRouter([
   {
     path: "/redirect",
     element: <Redirect />
-  },
+  }
 ])
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <React.StrictMode>
-    <Content />
     <RouterProvider router={router} />
   </React.StrictMode>
 )

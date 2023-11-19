@@ -1,6 +1,6 @@
 import { Typography, Chip } from "@mui/material"
 import React from "react"
-import packageJson from '../../../../../package.json'
+import packageJson from '../../../package.json'
 
 export const VersionBadge = () => {
   return (
