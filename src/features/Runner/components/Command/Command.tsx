@@ -25,6 +25,19 @@ const COMMAND_NAME_OPTIONS = [
 ]
 const CAN_INCREMENT_NOTIFICATION = [CommandName.click]
 const CAN_NOTIFY = [CommandName.click, CommandName.find]
+const HAS_TEXT_FIELD = [
+  CommandName.click,
+  CommandName.waitFor,
+  CommandName.whileVisible,
+  CommandName.find
+]
+const HAS_SELECTOR_FIELD = [
+  CommandName.click,
+  CommandName.waitFor,
+  CommandName.whileVisible,
+  CommandName.find,
+  CommandName.delay,
+]
 
 interface DragItem {
   index: number
@@ -66,6 +79,17 @@ export const Command: React.FC<Props> = ({
   const canIncrementNotification = CAN_INCREMENT_NOTIFICATION.includes(
     command.name
   )
+  const hasSelectorField = HAS_SELECTOR_FIELD.includes(command.name)
+  const hasTextField = HAS_TEXT_FIELD.includes(command.name)
+
+  const getSelectorFieldLabel = () => {
+    switch (command.name) {
+      case CommandName.delay:
+        return 'время (в мс)'
+      default:
+        return 'селектор'
+    }
+  }
 
   const ref = useRef<HTMLDivElement>(null)
   const [{ handlerId }, drop] = useDrop<
@@ -249,8 +273,8 @@ export const Command: React.FC<Props> = ({
           maxRows={4}
           disabled={isOn}
         />
-        <TextField
-          label="селектор"
+        {hasSelectorField && <TextField
+          label={getSelectorFieldLabel()}
           name="selector"
           onChange={(evt) =>
             onCommandUpdate(command.id, "selector", evt.target.value)
@@ -260,20 +284,22 @@ export const Command: React.FC<Props> = ({
           multiline
           maxRows={4}
           disabled={isOn}
-        />
-        <TextField
-          label="текст"
-          name="text"
-          onChange={(evt) =>
-            onCommandUpdate(command.id, "text", evt.target.value)
-          }
-          value={command.text}
-          size="small"
-          multiline
-          maxRows={4}
-          disabled={isOn}
-          InputLabelProps={{ shrink: command.text ? true : false }}
-        />
+        />}
+        {hasTextField && (
+          <TextField
+            label="текст"
+            name="text"
+            onChange={(evt) =>
+              onCommandUpdate(command.id, "text", evt.target.value)
+            }
+            value={command.text}
+            size="small"
+            multiline
+            maxRows={4}
+            disabled={isOn}
+            InputLabelProps={{ shrink: command.text ? true : false }}
+          />
+        )}
       </S.ValuesWrapper>
       <IconButton
         data-testid="delete-command"

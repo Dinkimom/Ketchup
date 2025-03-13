@@ -3,9 +3,9 @@ import AutorenewIcon from "@mui/icons-material/Autorenew"
 import { IconButton, Typography } from "@mui/material"
 import React from "react"
 
+import { VersionBadge } from "../../components/VersionBadge"
 import { Command } from "./components/Command"
 import { Controls } from "./components/Controls"
-import { VersionBadge } from "../../components/VersionBadge"
 import * as S from "./styled"
 import { useRunner } from "./useRunner"
 import { getIsInCycle } from "./utils"
@@ -50,34 +50,52 @@ export const Runner: React.FC = () => {
         </S.CounterWrapper>
         <Controls isOn={on} onToggleOn={handleToggleOn} />
         <S.CommandsWrapper>
+          {!on && commands.length > 0 && (
+            <IconButton
+              onClick={() => handleAddCommand(0)}
+              sx={{ margin: "-4px auto" }}
+              data-testid="add-button">
+              <AddCircleIcon sx={{ width: 24, height: 24 }} />
+            </IconButton>
+          )}
           {commands.map((command, index) => (
-            <Command
-              index={index}
-              key={command.id}
-              command={command}
-              isInCycle={getIsInCycle(commands, command)}
-              isOn={on}
-              isAiming={aimingCommand === command.id}
-              isRunning={on && runnerCommands[0]?.id === command.id}
-              isComplete={
-                on &&
-                !runnerCommands.find(
-                  (runnerCommand) => runnerCommand.id === command.id
-                )
-              }
-              onShowElement={handleShowElement}
-              onCommandUpdate={handleCommandUpdate}
-              onCommandRemove={handleRemoveCommand}
-              onCommandMove={handleCommandMove}
-              onElementAim={handleElementAim}
-            />
+            <>
+              <Command
+                index={index}
+                key={command.id}
+                command={command}
+                isInCycle={getIsInCycle(commands, command)}
+                isOn={on}
+                isAiming={aimingCommand === command.id}
+                isRunning={on && runnerCommands[0]?.id === command.id}
+                isComplete={
+                  on &&
+                  !runnerCommands.find(
+                    (runnerCommand) => runnerCommand.id === command.id
+                  )
+                }
+                onShowElement={handleShowElement}
+                onCommandUpdate={handleCommandUpdate}
+                onCommandRemove={handleRemoveCommand}
+                onCommandMove={handleCommandMove}
+                onElementAim={handleElementAim}
+              />
+              {!on && index !== commands.length - 1 && (
+                <IconButton
+                  onClick={() => handleAddCommand(index + 1)}
+                  sx={{ margin: "-4px auto" }}
+                  data-testid="add-button">
+                  <AddCircleIcon sx={{ width: 24, height: 24 }} />
+                </IconButton>
+              )}
+            </>
           ))}
           {!on && (
             <IconButton
-              onClick={handleAddCommand}
-              color="primary"
+              onClick={() => handleAddCommand()}
+              sx={{ margin: "-4px auto" }}
               data-testid="add-button">
-              <AddCircleIcon sx={{ width: 32, height: 32 }} />
+              <AddCircleIcon sx={{ width: 24, height: 24 }} />
             </IconButton>
           )}
         </S.CommandsWrapper>

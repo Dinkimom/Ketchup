@@ -34,11 +34,26 @@ export const useRunner = () => {
     setOn(!on)
   }
 
-  const handleAddCommand = () => {
-    setCommands((commands) => [
-      ...commands,
-      { id: generateId(), name: CommandName.click, selector: "" }
-    ])
+  const handleAddCommand = (index?: number) => {
+    if (index === undefined) {
+      setCommands((commands) => [
+        ...commands,
+        { id: generateId(), name: CommandName.click, selector: "" }
+      ])
+
+      return
+    }
+
+    setCommands((commands) => {
+      commands.splice(index, 0, {
+        id: generateId(),
+        name: CommandName.click,
+        selector: ""
+      })
+      commands.join()
+
+      return [...commands]
+    })
   }
 
   const handleRemoveCommand = (id: string) => {
