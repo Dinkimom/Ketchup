@@ -1,0 +1,73 @@
+{
+  "commands": [
+    {
+      "id": "k9bk5pmy",
+      "name": "click",
+      "selector": "DIV[class=\"pull-left\"] BUTTON[class=\"btn btn-sm btn-outline-success mr-2\"]",
+      "text": "Посмотреть и принять решение"
+    },
+    { "id": "j02gs75g", "name": "delay", "selector": "50000", "text": "" },
+    {
+      "id": "7a8jgq7n",
+      "name": "waitFor",
+      "selector": "DIV[style=\"position: relative; display: inline-block;\"] BUTTON:not([disabled])[type=\"button\"][class=\"btn btn-sm btn-success\"]",
+      "text": "Принять на регистрацию"
+    },
+    { "id": "e9ikagnt", "name": "delay", "selector": "1000" },
+    {
+      "id": "71jx1drb",
+      "name": "click",
+      "selector": "DIV[style=\"position: relative; display: inline-block;\"] BUTTON[type=\"button\"][class=\"btn btn-sm btn-success\"]",
+      "text": "Принять на регистрацию"
+    },
+    { "id": "i8gzurcv", "name": "delay", "selector": "5000" },
+    {
+      "id": "wkije12",
+      "name": "click",
+      "selector": "PACKAGE-VIEW BUTTON[class=\"mt-3 mr-2 btn btn-sm btn-primary\"]",
+      "text": "Зарегистрировать уведомления"
+    },
+    { "id": "jd0zr10k", "name": "delay", "selector": "5000" },
+    {
+      "id": "k9bk5p14",
+      "name": "click",
+      "selector": "DIV[class=\"clearfix w-100\"] BUTTON[class=\"btn btn-sm btn-primary float-left\"]",
+      "text": " Подписать "
+    },
+    { "id": "ejxz0jo2", "name": "delay", "selector": "18000", "text": "" },
+    {
+      "id": "5o2g5etu",
+      "name": "click",
+      "selector": "DIV[class=\"clearfix w-100\"] BUTTON[class=\"btn btn-sm btn-default float-right\"]",
+      "text": " Закрыть "
+    },
+    { "id": "rbt1i94", "name": "delay", "selector": "5000" },
+    {
+      "id": "ee2ldgue",
+      "name": "click",
+      "selector": "PACKAGE-VIEW-CERTIFICATE BUTTON[class=\"mt-3 mr-2 btn btn-sm btn-primary\"]",
+      "text": "Подписать свидетельства и завершить работу над пакетом"
+    },
+    { "id": "xcv9ep2", "name": "delay", "selector": "5000" },
+    {
+      "id": "8cjtbg39",
+      "name": "click",
+      "selector": "DIV[class=\"clearfix w-100\"] BUTTON[class=\"btn btn-sm btn-primary float-left\"]",
+      "text": " Подписать "
+    },
+    { "id": "6ok0xmpi", "name": "delay", "selector": "10000", "text": "" },
+    {
+      "id": "5ehd2f78",
+      "name": "click",
+      "selector": "DIV[class=\"float-right\"] BUTTON[class=\"btn btn-sm btn-default\"]",
+      "text": " Закрыть "
+    },
+    {
+      "id": "81p2xokk",
+      "name": "click",
+      "selector": "DIV[class=\"float-right\"] BUTTON[class=\"btn btn-sm btn-primary\"]",
+      "text": " Вcтaть в очeрeдь "
+    }
+  ],
+  "isAvailable": true
+}
